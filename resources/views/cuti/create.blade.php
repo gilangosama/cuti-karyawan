@@ -27,7 +27,7 @@
                             </label>
                         </div>
 
-                        <!-- Cuti Besar -->
+                        {{-- <!-- Cuti Besar -->
                         <div class="relative">
                             <input type="radio" name="jenis_cuti" id="cuti_besar" value="besar" class="peer hidden">
                             <label for="cuti_besar" class="block p-6 bg-white border-2 rounded-xl cursor-pointer transition-all peer-checked:border-purple-500 peer-checked:bg-purple-50 hover:bg-gray-50">
@@ -40,7 +40,7 @@
                                 <p class="text-sm text-gray-600">Periode: <span class="font-semibold text-purple-600">6 tahun</span></p>
                                 <p class="text-xs text-gray-500 mt-2">Cuti panjang setelah masa kerja tertentu</p>
                             </label>
-                        </div>
+                        </div> --}}
 
                         <!-- Cuti Sakit -->
                         <div class="relative">
@@ -72,7 +72,7 @@
                             </label>
                         </div>
 
-                        <!-- Cuti Penting -->
+                        {{-- <!-- Cuti Penting -->
                         <div class="relative">
                             <input type="radio" name="jenis_cuti" id="cuti_penting" value="penting" class="peer hidden">
                             <label for="cuti_penting" class="block p-6 bg-white border-2 rounded-xl cursor-pointer transition-all peer-checked:border-purple-500 peer-checked:bg-purple-50 hover:bg-gray-50">
@@ -85,8 +85,8 @@
                                 <p class="text-sm text-gray-600">Maksimal: <span class="font-semibold text-purple-600">Menyesuaikan</span></p>
                                 <p class="text-xs text-gray-500 mt-2">Cuti untuk keperluan penting keluarga</p>
                             </label>
-                        </div>
-                    </div>
+                        </div> --}}
+                    </div> 
 
                     <div class="flex justify-end mt-6">
                         <button type="button" onclick="showForm()" class="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2">
