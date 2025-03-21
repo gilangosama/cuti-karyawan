@@ -52,9 +52,11 @@
                     <div class="border-t px-4 py-4">
                         <div class="flex items-center">
                             <div class="flex-shrink-0">
-                                <svg class="h-8 w-8 rounded-full bg-gray-200 text-gray-600 p-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                                </svg>
+                                <a href="{{ route('profile') }}" class="...">
+                                    <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                    </svg>
+                                </a>
                             </div>
                             <div class="ml-3">
                                 <p class="text-sm font-medium text-gray-700">{{ Auth::user()->name }}</p>

@@ -27,4 +27,8 @@ Route::middleware(['auth'])->group(function () {
     })->name('cuti.create');
 });
 
+Route::get('/profile', function () {
+    return view('profile.index');
+})->middleware(['auth'])->name('profile');
+
 require __DIR__.'/auth.php';
