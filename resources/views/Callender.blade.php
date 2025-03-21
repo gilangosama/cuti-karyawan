@@ -4,35 +4,51 @@
             {{ __('Calendar') }}
         </h2>
     </x-slot>
-    <div class="container my-5">
+    <div class="container my-3">
         <div class="row">
             <div class="col-md-12">
                 {{-- setup aplication untuk cuti --}}
-                <div class="card mb-3">
-                    <button>Setup Aplication</button>
+                <div class="mb-3">
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#setupApp">Setup
+                        Aplication</button>
                     {{-- modal --}}
-                    <div class="modal fade" id="setupApp" tabindex="-1" aria-labelledby="setupAppLabel" aria-hidden="false">
+                    <div class="modal fade" id="setupApp" tabindex="-1" aria-labelledby="setupAppLabel"
+                        aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <h5 class="modal-title" id="setupAppLabel">Setup Aplication</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
                                 </div>
-                                <div class="modal-body text-center">
-                                    <form action="">
+                                <div class="modal-body">
+                                    <form id='setupAppForm'>
                                         <div class="mb-3">
-                                            <label for="cuti" class="form-label">Cuti</label>
+                                            <label for="cuti" class="form-label">Minimal Hari Pengajuan Cuti</label>
                                             <input type="number" class="form-control" id="cuti" required>
                                         </div>
                                         <div class="mb-3">
                                             <label for="izin" class="form-label">Izin</label>
                                             <input type="number" class="form-control" id="izin" required>
                                         </div>
-                                        <div class="input-group mb-3">
-                                            <div class="input-group-text">
-                                              <input class="form-check-input mt-0" type="checkbox" value="" aria-label="Checkbox for following text input">
+                                        <div class="mb-3">
+                                            <label>Pilih Hari Kerja:</label>
+                                            <div class="list-group">
+                                                <label class="list-group-item"><input type="checkbox" name="days[]"
+                                                        value="1"> Senin</label>
+                                                <label class="list-group-item"><input type="checkbox" name="days[]"
+                                                        value="2"> Selasa</label>
+                                                <label class="list-group-item"><input type="checkbox" name="days[]"
+                                                        value="3"> Rabu</label>
+                                                <label class="list-group-item"><input type="checkbox" name="days[]"
+                                                        value="4"> Kamis</label>
+                                                <label class="list-group-item"><input type="checkbox" name="days[]"
+                                                        value="5"> Jumat</label>
+                                                <label class="list-group-item"><input type="checkbox" name="days[]"
+                                                        value="6"> Sabtu</label>
+                                                <label class="list-group-item"><input type="checkbox" name="days[]"
+                                                        value="0"> Minggu</label>
                                             </div>
-                                            <input type="text" class="form-control" aria-label="Text input with checkbox">
                                         </div>
                                         <button type="submit" class="btn btn-primary">Save</button>
                                     </form>
@@ -74,6 +90,10 @@
                             <label for="end" class="form-label">End</label>
                             <input type="date" class="form-control" id="end">
                         </div>
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Description</label>
+                            <textarea class="form-control" id="description"></textarea>
+                        </div>
                         <button type="submit" class="btn btn-primary">Save</button>
                         <button type="button" class="btn btn-danger" id="deleteEvent">Delete</button>
                     </form>
@@ -82,10 +102,19 @@
         </div>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src='https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.15/index.global.min.js'></script>
-    <script src='https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@6.1.15/index.global.min.js'></script>
-    <script src='https://cdn.jsdelivr.net/npm/@fullcalendar/interaction@6.1.15/index.global.min.js'></script>
+    @push('head')
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
+            integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+        <link href='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css' rel='stylesheet'>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous">
+        </script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src='https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.15/index.global.min.js'></script>
+        <script src='https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@6.1.15/index.global.min.js'></script>
+        <script src='https://cdn.jsdelivr.net/npm/@fullcalendar/interaction@6.1.15/index.global.min.js'></script>
+    @endpush
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             var calendarEl = document.getElementById('calendar');
@@ -106,7 +135,8 @@
                     $('#title').val(info.event.title);
                     $('#start').val(info.event.startStr);
                     $('#end').val(info.event.endStr);
-                }
+                    $('#description').val(info.event.extendedProps.description);
+                },
             });
             calendar.render();
 
@@ -118,7 +148,8 @@
                 var eventData = {
                     title: $('#title').val(),
                     start: $('#start').val(),
-                    end: $('#end').val()
+                    end: $('#end').val(),
+                    description: $('#description').val()
                 };
 
                 fetch(url, {
@@ -161,6 +192,50 @@
                         });
                 }
             });
+
+            $('#setupAppForm').on('submit', function(e) {
+                e.preventDefault();
+                let cuti = $('#cuti').val();
+                let izin = $('#izin').val();
+                let selectedDays = Array.from(document.querySelectorAll("input[name='days[]']:checked"))
+                    .map(el => parseInt(el.value));
+
+                fetch('/setup-app', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        body: JSON.stringify({
+                            cuti: cuti,
+                            izin: izin,
+                            days: selectedDays
+                        })
+                    }).then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            alert('Pengaturan disimpan!');
+                            $('#setupApp').modal('hide');
+                        } else {
+                            alert('Gagal menyimpan pengaturan.');
+                        }
+                    });
+            });
+
+            // Load pengaturan dari server
+            fetch('/setup-app')
+                .then(response => response.json())
+                .then(data => {
+                    if (data) {
+                        $('#cuti').val(data.cuti);
+                        $('#izin').val(data.izin);
+                        let selectedDays = data.days;
+                        selectedDays.forEach(day => {
+                            document.querySelector(`input[name='days[]'][value='${day}']`).checked =
+                                true;
+                        });
+                    }
+                });
         });
     </script>
 </x-app-layout>

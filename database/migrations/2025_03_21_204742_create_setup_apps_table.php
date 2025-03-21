@@ -11,13 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('events', function (Blueprint $table) {
+        Schema::create('setup_app', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->date('start');
-            $table->date('end')->nullable();
-            $table->enum('color', ['danger', 'primary', 'info', 'success'])->default('primary');
-            $table->string('description')->nullable();
+            $table->integer('cuti');
+            $table->integer('izin');
+            $table->text('days');
             $table->timestamps();
         });
     }
@@ -27,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('events');
+        Schema::dropIfExists('setup_apps');
     }
 };

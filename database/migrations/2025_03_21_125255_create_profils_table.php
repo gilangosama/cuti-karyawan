@@ -11,14 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('events', function (Blueprint $table) {
+        Schema::create('profils', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->date('start');
-            $table->date('end')->nullable();
-            $table->enum('color', ['danger', 'primary', 'info', 'success'])->default('primary');
-            $table->string('description')->nullable();
+            $table->unsignedBigInteger('user_id');
+            $table->integer('no_badge');
+            $table->string('divisi');
+            $table->date('join_date');
+            $table->string('jenis');
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
@@ -27,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('events');
+        Schema::dropIfExists('profils');
     }
 };

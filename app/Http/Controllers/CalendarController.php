@@ -14,7 +14,7 @@ class CalendarController extends Controller
 
     public function events(Request $request)
     {
-        $events = Event::all(['id', 'title', 'start', 'end']);
+        $events = Event::all(['id', 'title', 'start', 'end', 'color', 'description']);
         return response()->json($events);
     }
 
@@ -24,6 +24,8 @@ class CalendarController extends Controller
         $event->title = $request->input('title');
         $event->start = $request->input('start');
         $event->end = $request->input('end');
+        $event->color = $request->input('color');
+        $event->description = $request->input('description');
         $event->save();
 
         return response()->json(['success' => true]);
@@ -35,6 +37,8 @@ class CalendarController extends Controller
         $event->title = $request->input('title');
         $event->start = $request->input('start');
         $event->end = $request->input('end');
+        $event->color = $request->input('color');
+        $event->description = $request->input('description');
         $event->save();
 
         return response()->json(['success' => true]);
