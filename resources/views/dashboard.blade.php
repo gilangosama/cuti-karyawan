@@ -2,8 +2,8 @@
     <x-slot name="header">
         <div class="flex justify-between items-center">
             <h2 class="font-semibold text-2xl text-gray-800 leading-tight">
-                {{ __('Dashboard') }}
-            </h2>
+            {{ __('Dashboard') }}
+        </h2>
             <span class="text-sm text-gray-600">Sisa Cuti Tahunan: <span class="font-bold text-purple-600">12 Hari</span></span>
         </div>
     </x-slot>
