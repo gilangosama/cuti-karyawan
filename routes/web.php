@@ -43,11 +43,11 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/cuti/approval/{id}', function ($id) {
         return view('cuti.approval.detail', ['id' => $id]);
     })->name('cuti.approval.detail');
-});
 
-Route::get('/profile', function () {
-    return view('profile.index');
-})->middleware(['auth'])->name('profile');
+    Route::get('/profile', function () {
+        return view('profile.index');
+    })->name('profile');
+});
 
 Route::get('/hrd', function () {
     return view('hrd.index');

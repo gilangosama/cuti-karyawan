@@ -128,9 +128,39 @@
                             </div>
                         </div>
 
-                        <div class="flex justify-end">
-                            <button type="submit" class="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2">
-                                {{ auth()->user()->is_profile_completed ? 'Update Profile' : 'Simpan Profile' }}
+                        <!-- Setelah Status Kerja, tambahkan section baru -->
+                        <div class="mt-6">
+                            <h3 class="text-lg font-semibold text-gray-900 mb-4">Informasi Approval</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <!-- Approval 1 -->
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Approval 1</label>
+                                    <select name="approval_1" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-purple-500">
+                                        <option value="">Pilih Approval 1</option>
+                                        <option value="approval_1">Alex</option>
+                                        <option value="approval_2">Alex</option>
+                                        <option value="approval_3">jack</option>
+                                        <option value="approval_4">dudu</option>
+                                    </select>
+                                </div>
+
+                                <!-- Approval 2 -->
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Approval 2</label>
+                                    <select name="approval_2" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-purple-500">
+                                        <option value="">Pilih Approval 2</option>
+                                        <option value="approval_1">Alex</option>
+                                        <option value="approval_2">Alex</option>
+                                        <option value="approval_3">jack</option>
+                                        <option value="approval_4">dudu</option>
+                                    </select>
+                            </div>
+                        </div>
+
+                        <!-- Tombol Simpan di bagian bawah -->
+                        <div class="mt-6 flex justify-end">
+                            <button type="submit" class="px-6 py-2.5 bg-purple-600 text-white rounded-lg hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 text-sm font-medium">
+                                Simpan Profile
                             </button>
                         </div>
                     </form>
