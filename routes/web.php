@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\CutiController;
 use App\Http\Controllers\SetupAppController;
+use App\Http\Controllers\HrdController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -43,15 +44,47 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/cuti/create', function () {
         return view('cuti.create');
     })->name('cuti.create');
+
+    Route::prefix('cuti')->group(function () {
+        Route::get('/approval', function () {
+            return view('cuti.approval.index');
+        })->name('cuti.approval.index');
+        
+        Route::get('/approval/detail/{id}', function ($id) {
+            return view('cuti.approval.detail');
+        })->name('cuti.approval.detail');
+    });
+
+    // Route untuk approval
+    Route::prefix('approval')->middleware(['auth'])->group(function () {
+        // Approval 1 & 2 menggunakan halaman yang sama
+        Route::get('/manager', function () {
+            return view('cuti.approval.manager');
+        })->name('approval.manager');
+
+        // Approval HRD terpisah
+        Route::get('/hrd', function () {
+            return view('cuti.approval.hrd');
+        })->name('approval.hrd');
+    });
 });
 
     Route::get('/profile', function () {
         return view('profile.index');
     })->name('profile');
-});
 
 Route::get('/hrd', function () {
     return view('hrd.index');
 })->name('hrd.index');
+
+Route::prefix('hrd')->group(function () {
+    Route::get('/create', function () {
+        return view('hrd.create');
+    })->name('hrd.create');
+
+    Route::get('/edit/{id}', function ($id) {
+        return view('hrd.edit');
+    })->name('hrd.edit');
+});
 
 require __DIR__ . '/auth.php';

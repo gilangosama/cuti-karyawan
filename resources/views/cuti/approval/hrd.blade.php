@@ -1,8 +1,10 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Approval Cuti') }}
-        </h2>
+        <div class="flex justify-between items-center">
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+                {{ __('Approval HRD - Surat Cuti') }}
+            </h2>
+        </div>
     </x-slot>
 
     <div class="py-12">
@@ -103,5 +105,7 @@
                 </div>
             </div>
         </div>
+            </div>
+        </div>
     </div>
-</x-app-layout>
+</x-app-layout> 

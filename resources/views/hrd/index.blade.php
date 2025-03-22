@@ -4,9 +4,9 @@
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 {{ __('Data Karyawan') }}
             </h2>
-            <button class="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 text-sm font-medium">
+            <a href="{{ route('hrd.create') }}" class="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 text-sm font-medium">
                 Tambah Karyawan
-            </button>
+            </a>
         </div>
     </x-slot>
 
@@ -77,7 +77,7 @@
                                     </span>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    <a href="#" class="text-purple-600 hover:text-purple-900 mr-3">Edit</a>
+                                    <a href="{{ route('hrd.edit', 1) }}" class="text-purple-600 hover:text-purple-900 mr-3">Edit</a>
                                     <a href="#" class="text-red-600 hover:text-red-900">Hapus</a>
                                 </td>
                             </tr>

@@ -64,14 +64,14 @@
                 </div>
             </form>
 
-            <div class="mt-8 text-center">
+            {{-- <div class="mt-8 text-center">
                 <p class="text-gray-600">
                     {{ __('Belum punya akun?') }}
                     <a href="{{ route('register') }}" class="font-semibold text-purple-600 hover:text-purple-800 transition duration-150 ease-in-out">
                         {{ __('Daftar Sekarang') }}
                     </a>
                 </p>
-            </div>
+            </div> --}}
         </div>
     </div>
 </x-guest-layout>
