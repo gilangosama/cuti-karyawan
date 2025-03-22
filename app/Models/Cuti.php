@@ -9,10 +9,16 @@ class Cuti extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'start', 'end', 'description', 'status', 'approval_1', 'approval_2'];
+    protected $fillable = ['user_id', 'jenis', 'start', 'end', 'alamat', 'foto', 'description', 'status'];
 
     public function user()
     {
         return $this->belongsTo(User::class);
     }
+
+    public function cutiApproval()
+    {
+        return $this->hasMany(CutiApproval::class);
+    }
+
 }

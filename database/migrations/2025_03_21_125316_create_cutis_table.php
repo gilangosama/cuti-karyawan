@@ -14,14 +14,13 @@ return new class extends Migration
         Schema::create('cutis', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->enum('jenis', ['cuti', 'sakit']);
+            $table->enum('jenis', ['tahunan', 'sakit', 'lahiran'])->default('tahunan');
             $table->date('start');
             $table->date('end');
             $table->string('alamat')->nullable();
             $table->string('foto')->nullable();
             $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
-            $table->boolean('approval_1');
-            $table->boolean('approval_2');
+            $table->string('description')->nullable();
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

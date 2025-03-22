@@ -60,33 +60,6 @@
                             </div>
                         </div>
 
-                        <!-- Informasi Pribadi -->
-                        <div class="border-b pb-6">
-                            <h3 class="text-lg font-semibold text-gray-900 mb-4">Informasi Pribadi</h3>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">NIK</label>
-                                    <input type="text" name="nik" value="{{ old('nik', Auth::user()->nik) }}" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-purple-500" required>
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">Nomor Telepon</label>
-                                    <input type="tel" name="phone" value="{{ old('phone', Auth::user()->phone) }}" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-purple-500" required>
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">Tempat Lahir</label>
-                                    <input type="text" name="birth_place" value="{{ old('birth_place', Auth::user()->birth_place) }}" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-purple-500" required>
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">Tanggal Lahir</label>
-                                    <input type="date" name="birth_date" value="{{ old('birth_date', Auth::user()->birth_date) }}" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-purple-500" required>
-                                </div>
-                                <div class="md:col-span-2">
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">Alamat</label>
-                                    <textarea name="address" rows="3" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-purple-500" required>{{ old('address', Auth::user()->address) }}</textarea>
-                                </div>
-                            </div>
-                        </div>
-
                         <!-- Informasi Pekerjaan -->
                         <div class="border-b pb-6">
                             <h3 class="text-lg font-semibold text-gray-900 mb-4">Informasi Pekerjaan</h3>

@@ -11,17 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('profils', function (Blueprint $table) {
+        Schema::create('cuti_approvals', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('cuti_id');
             $table->unsignedBigInteger('user_id');
-            $table->integer('no_badge')->nullable();
-            $table->string('section')->nullable();
-            $table->string('position')->nullable();
-            $table->date('join_date')->nullable();
-            $table->string('jenis')->nullable();
-            $table->integer('kouta')->default(12);
+            $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
+            $table->string('approval')->nullable();
+            $table->string('note')->nullable();
             $table->timestamps();
 
+            $table->foreign('cuti_id')->references('id')->on('cutis')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
@@ -31,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('profils');
+        Schema::dropIfExists('cuti_approvals');
     }
 };

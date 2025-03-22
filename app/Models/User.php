@@ -21,6 +21,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
     ];
 
     /**
@@ -53,5 +54,13 @@ class User extends Authenticatable
     public function cuti()
     {
         return $this->hasMany(Cuti::class);
+    }
+    public function cutiApproval()
+    {
+        return $this->hasMany(CutiApproval::class);
+    }
+    public function event()
+    {
+        return $this->hasMany(Event::class);
     }
 }
