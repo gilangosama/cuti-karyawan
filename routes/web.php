@@ -25,10 +25,22 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/cuti/create', function () {
         return view('cuti.create');
     })->name('cuti.create');
+
+    Route::get('/cuti/approval', function () {
+        return view('cuti.approval.index');
+    })->name('cuti.approval.index');
+
+    Route::get('/cuti/approval/{id}', function ($id) {
+        return view('cuti.approval.detail', ['id' => $id]);
+    })->name('cuti.approval.detail');
 });
 
 Route::get('/profile', function () {
     return view('profile.index');
 })->middleware(['auth'])->name('profile');
+
+Route::get('/hrd', function () {
+    return view('hrd.index');
+})->name('hrd.index');
 
 require __DIR__.'/auth.php';

@@ -102,7 +102,12 @@
                             <div class="flex items-center">
                                 <label class="text-sm font-medium text-gray-700 w-32">Leave Period</label>
                                 <span class="text-gray-600 mx-2">:</span>
-                                <input type="text" value="2024/2025" class="flex-1 px-4 py-2 border border-gray-300 rounded-lg bg-gray-50 text-sm" readonly>
+                                <select name="leave_period" class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-1 focus:ring-purple-500 text-sm">
+                                    <option value="">Pilih Period</option>
+                                    <option value="2023/2024">2023/2024</option>
+                                    <option value="2024/2025">2024/2025</option>
+                                    <option value="2025/2026">2025/2026</option>
+                                </select>
                             </div>
                             <div class="flex items-center">
                                 <label class="text-sm font-medium text-gray-700">Total Leave day(s)</label>
@@ -122,11 +127,15 @@
                             <div class="flex items-center flex-1">
                                 <label class="text-sm font-medium text-gray-700 w-24">On the date</label>
                                 <span class="text-gray-600 mx-2">:</span>
-                                <input type="text" name="start_date" placeholder="mm/dd/yyyy" class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-1 focus:ring-purple-500 text-sm">
-                            </div>
-                            <div class="flex items-center flex-1">
-                                <label class="text-sm font-medium text-gray-700 w-12">until</label>
-                                <input type="text" name="end_date" placeholder="mm/dd/yyyy" class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-1 focus:ring-purple-500 text-sm">
+                                <div class="flex-1 flex items-center gap-2">
+                                    <div class="flex-1">
+                                        <input type="text" name="start_date" id="start_date" placeholder="From Date" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-1 focus:ring-purple-500 text-sm">
+                                    </div>
+                                    <span class="text-sm text-gray-600">s/d</span>
+                                    <div class="flex-1">
+                                        <input type="text" name="end_date" id="end_date" placeholder="To Date" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-1 focus:ring-purple-500 text-sm">
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
@@ -266,5 +275,53 @@
             // Scroll ke pilihan jenis cuti
             document.getElementById('jenisCutiSelection').scrollIntoView({ behavior: 'smooth' });
         }
+
+        // Inisialisasi datepicker untuk start_date
+        const startDatePicker = flatpickr("#start_date", {
+            dateFormat: "d/m/Y",
+            allowInput: true,
+            onChange: function(selectedDates, dateStr, instance) {
+                // Update minimum date untuk end_date
+                endDatePicker.set('minDate', dateStr);
+            }
+        });
+
+        // Inisialisasi datepicker untuk end_date
+        const endDatePicker = flatpickr("#end_date", {
+            dateFormat: "d/m/Y",
+            allowInput: true,
+            onChange: function(selectedDates, dateStr, instance) {
+                // Hitung total hari
+                if (startDatePicker.selectedDates[0]) {
+                    const start = startDatePicker.selectedDates[0];
+                    const end = selectedDates[0];
+                    const diffTime = Math.abs(end - start);
+                    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
+                    document.querySelector('input[name="total_days"]').value = diffDays;
+                }
+            }
+        });
+
+        // Generate leave period options dynamically
+        function generateLeavePeriodsOptions() {
+            const select = document.querySelector('select[name="leave_period"]');
+            const currentYear = new Date().getFullYear();
+            
+            // Clear existing options except the first one
+            while (select.options.length > 1) {
+                select.remove(1);
+            }
+
+            // Add options for 5 years (current year - 1 to current year + 3)
+            for (let i = -1; i < 4; i++) {
+                const year = currentYear + i;
+                const nextYear = year + 1;
+                const option = new Option(`${year}/${nextYear}`, `${year}/${nextYear}`);
+                select.add(option);
+            }
+        }
+
+        // Call the function when page loads
+        generateLeavePeriodsOptions();
     </script>
 </x-app-layout> 
