@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\CalendarController;
+use App\Http\Controllers\SetupAppController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -8,9 +10,17 @@ Route::get('/', function () {
 })->name('home');
 
 Route::middleware('auth')->group(function () {
+    Route::get('/calendar', [CalendarController::class, 'index']);
+    Route::get('/calendar/events', [CalendarController::class, 'events']);
+    Route::post('/calendar/store', [CalendarController::class, 'store']); // Tambahkan route untuk menyimpan event
+    Route::put('/calendar/update/{id}', [CalendarController::class, 'update']); // Tambahkan route untuk mengedit event
+    Route::delete('/calendar/destroy/{id}', [CalendarController::class, 'destroy']); // Tambahkan route untuk menghapus event
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    Route::post('/setup-app', [SetupAppController::class, 'store']);
+    Route::get('/setup-app', [SetupAppController::class, 'get']);
 });
 
 Route::middleware(['auth'])->group(function () {
@@ -43,4 +53,4 @@ Route::get('/hrd', function () {
     return view('hrd.index');
 })->name('hrd.index');
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
