@@ -2,8 +2,39 @@
     <x-slot name="header">
         <div class="d-flex justify-content-between align-items-center">
             <h2 class="h4 fw-semibold mb-0">Data Cuti Karyawan</h2>
+            <form method="GET" action="{{ route('cuti.index') }}" class="d-flex">
+                <input type="text" name="search" class="form-control me-2" placeholder="Cari..."
+                    value="{{ request('search') }}">
+                <button type="submit" class="btn btn-primary"
+                    style="background-color: #7C3AED; border: none;">Cari</button>
+            </form>
         </div>
     </x-slot>
+
+    @if (session('status'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('status') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+    @if (session('error'))
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ session('error') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(function() {
+                var alert = document.querySelector('.alert');
+                if (alert) {
+                    alert.classList.remove('show');
+                    alert.classList.add('fade');
+                }
+            }, 3000); // 3 seconds
+        });
+    </script>
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -22,18 +53,21 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>REG/2024/001</td>
-                                <td>20 Mar 2024</td>
-                                <td>Cuti Tahunan</td>
-                                <td>22 Mar 2024 - 24 Mar 2024</td>
-                                <td>3 Hari</td>
-                                <td>
-                                    <span class="badge" style="background-color: #FCD34D; color: #92400E;">
-                                        Menunggu Persetujuan
-                                    </span>
-                                </td>
-                            </tr>
+                            @foreach ($cutis as $cuti)
+                                <tr>
+                                    <td>{{ $cuti->id }}</td>
+                                    <td>{{ $cuti->created_at->format('d M Y') }}</td>
+                                    <td>{{ ucfirst($cuti->jenis) }}</td>
+                                    <td>{{ $cuti->start->format('d M Y') }} - {{ $cuti->end->format('d M Y') }}</td>
+                                    <td>{{ $cuti->total_hari }} Hari</td>
+                                    <td>
+                                        <span class="badge"
+                                            style="background-color: {{ $cuti->status == 'pending' ? '#FCD34D' : '#10B981' }}; color: {{ $cuti->status == 'pending' ? '#92400E' : '#FFFFFF' }};">
+                                            {{ ucfirst($cuti->status) }}
+                                        </span>
+                                    </td>
+                                </tr>
+                            @endforeach
                         </tbody>
                     </table>
                 </div>
@@ -41,27 +75,11 @@
                 <!-- Pagination -->
                 <div class="d-flex justify-content-between align-items-center mt-4">
                     <div class="small text-muted">
-                        Showing 1 to 10 of 20 results
+                        Showing {{ $cutis->firstItem() }} to {{ $cutis->lastItem() }} of {{ $cutis->total() }}
+                        results
                     </div>
                     <nav aria-label="Page navigation">
-                        <ul class="pagination pagination-sm mb-0">
-                            <li class="page-item">
-                                <a class="page-link" href="#" aria-label="Previous">
-                                    <span aria-hidden="true">Previous</span>
-                                </a>
-                            </li>
-                            <li class="page-item active">
-                                <a class="page-link" href="#" style="background-color: #7C3AED; border-color: #7C3AED;">1</a>
-                            </li>
-                            <li class="page-item">
-                                <a class="page-link" href="#">2</a>
-                            </li>
-                            <li class="page-item">
-                                <a class="page-link" href="#" aria-label="Next">
-                                    <span aria-hidden="true">Next</span>
-                                </a>
-                            </li>
-                        </ul>
+                        {{ $cutis->links('pagination::bootstrap-4') }}
                     </nav>
                 </div>
             </div>
@@ -69,35 +87,41 @@
     </div>
 
     <style>
-    .table > :not(caption) > * > * {
-        padding: 1rem 0.75rem;
-    }
-    .table tbody tr:hover {
-        background-color: #F9FAFB;
-    }
-    .badge {
-        padding: 0.5rem 0.75rem;
-        font-weight: 500;
-        border-radius: 20px;
-    }
-    .page-link {
-        color: #6B7280;
-        border-radius: 8px;
-        margin: 0 2px;
-    }
-    .page-link:hover {
-        color: #7C3AED;
-        background-color: #F3F4F6;
-    }
-    .page-item.active .page-link:hover {
-        color: white;
-    }
-    .table thead th {
-        font-size: 0.875rem;
-        font-weight: 500;
-        color: #6B7280;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-    }
+        .table> :not(caption)>*>* {
+            padding: 1rem 0.75rem;
+        }
+
+        .table tbody tr:hover {
+            background-color: #F9FAFB;
+        }
+
+        .badge {
+            padding: 0.5rem 0.75rem;
+            font-weight: 500;
+            border-radius: 20px;
+        }
+
+        .page-link {
+            color: #6B7280;
+            border-radius: 8px;
+            margin: 0 2px;
+        }
+
+        .page-link:hover {
+            color: #7C3AED;
+            background-color: #F3F4F6;
+        }
+
+        .page-item.active .page-link:hover {
+            color: white;
+        }
+
+        .table thead th {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #6B7280;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
     </style>
-</x-app-layout> 
+</x-app-layout>

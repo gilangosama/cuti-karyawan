@@ -18,8 +18,11 @@ class CutiController extends Controller
 {
     public function index()
     {
-        $approvals =
-            $cutis = Cuti::with('cutiApproval')->where('user_id', Auth::id())->get();
+        $cutis = Cuti::with('cutiApproval')->where('user_id', Auth::id())->get();
+        if (!$cutis) {
+            $cutis = "Tidak ada data cuti.";
+        }
+
         return view('cuti.index', compact('cutis'));
     }
 
