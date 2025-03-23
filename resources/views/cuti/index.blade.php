@@ -36,12 +36,12 @@
         });
     </script>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <!-- Tabel Data -->
-            <div class="bg-white overflow-hidden shadow-sm rounded-xl">
-                <div class="p-6">
-                    <table class="min-w-full divide-y divide-gray-200">
+    <div class="container-fluid py-4">
+        <!-- Table Section -->
+        <div class="card border-0 shadow-sm" style="border-radius: 16px;">
+            <div class="card-body p-4">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
                         <thead>
                             <tr>
                                 <th>No. Registrasi</th>
@@ -53,12 +53,12 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($cutis as $cuti)
+                            @forelse ($cutis as $cuti)
                                 <tr>
                                     <td>{{ $cuti->id }}</td>
                                     <td>{{ $cuti->created_at->format('d M Y') }}</td>
                                     <td>{{ ucfirst($cuti->jenis) }}</td>
-                                    <td>{{ $cuti->start->format('d M Y') }} - {{ $cuti->end->format('d M Y') }}</td>
+                                    <td>{{ $cuti->start }} - {{ $cuti->end }}</td>
                                     <td>{{ $cuti->total_hari }} Hari</td>
                                     <td>
                                         <span class="badge"
@@ -67,7 +67,11 @@
                                         </span>
                                     </td>
                                 </tr>
-                            @endforeach
+                            @empty
+                                <tr>
+                                    <td colspan="6" class="text-center">Tidak ada data cuti yang ditemukan.</td>
+                                </tr>
+                            @endforelse
                         </tbody>
                     </table>
                 </div>
@@ -75,8 +79,7 @@
                 <!-- Pagination -->
                 <div class="d-flex justify-content-between align-items-center mt-4">
                     <div class="small text-muted">
-                        Showing {{ $cutis->firstItem() }} to {{ $cutis->lastItem() }} of {{ $cutis->total() }}
-                        results
+                        Showing {{ $cutis->count() }} of {{ $cutis->total() }} results
                     </div>
                     <nav aria-label="Page navigation">
                         {{ $cutis->links('pagination::bootstrap-4') }}
@@ -87,18 +90,34 @@
     </div>
 
     <style>
-        .table> :not(caption)>*>* {
-            padding: 1rem 0.75rem;
+        .form-select,
+        .form-control {
+            border-radius: 8px;
+            border-color: #E5E7EB;
         }
 
-        .table tbody tr:hover {
-            background-color: #F9FAFB;
+        .form-select:focus,
+        .form-control:focus {
+            border-color: #7C3AED;
+            box-shadow: 0 0 0 0.25rem rgba(124, 58, 237, 0.25);
+        }
+
+        .table> :not(caption)>*>* {
+            padding: 1rem 0.75rem;
         }
 
         .badge {
             padding: 0.5rem 0.75rem;
             font-weight: 500;
             border-radius: 20px;
+        }
+
+        .bg-purple-100 {
+            background-color: #F3E8FF;
+        }
+
+        .text-purple {
+            color: #7C3AED;
         }
 
         .page-link {
@@ -114,14 +133,6 @@
 
         .page-item.active .page-link:hover {
             color: white;
-        }
-
-        .table thead th {
-            font-size: 0.875rem;
-            font-weight: 500;
-            color: #6B7280;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
         }
     </style>
 </x-app-layout>

@@ -16,12 +16,16 @@ use Illuminate\Support\Facades\Auth;
 
 class CutiController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $cutis = Cuti::with('cutiApproval')->where('user_id', Auth::id())->get();
-        if (!$cutis) {
-            $cutis = "Tidak ada data cuti.";
-        }
+        $search = $request->input('search');
+        $cutis = Cuti::with('cutiApproval')
+            ->where('user_id', Auth::id())
+            ->when($search, function ($query, $search) {
+                return $query->where('jenis', 'like', "%{$search}%")
+                    ->orWhere('status', 'like', "%{$search}%");
+            })
+            ->paginate(10);
 
         return view('cuti.index', compact('cutis'));
     }
@@ -30,11 +34,11 @@ class CutiController extends Controller
     {
         $approvals = User::with('profil')->where('role', 'approval')->get();
         $hrds = User::with('profil')->where('role', 'hrd')->get();
-        
+
         // Tambahkan pengecekan null
         $setupApp = SetupApp::first();
         $hMinCuti = $setupApp ? $setupApp->cuti : 0; // Default 0 jika setup belum ada
-        
+
         return view('cuti.create', compact('approvals', 'hrds', 'hMinCuti'));
     }
 

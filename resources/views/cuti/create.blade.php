@@ -8,7 +8,7 @@
         <div class="card border-0 shadow-sm rounded-3 mb-4">
             <div class="card-body p-4">
                 <h3 class="fw-semibold mb-4">Pilih Jenis Cuti</h3>
-                
+
                 <div class="row g-4">
                     <!-- Cuti Tahunan -->
                     <div class="col-md-4">
@@ -20,7 +20,8 @@
                                         <h5 class="fw-semibold mb-0">Cuti Tahunan</h5>
                                         <i class="bi bi-check-circle-fill text-purple d-none"></i>
                                     </div>
-                                    <p class="text-sm mb-1">Sisa cuti: <span class="fw-semibold text-purple">12 hari</span></p>
+                                    <p class="text-sm mb-1">Sisa cuti: <span class="fw-semibold text-purple">12
+                                            hari</span></p>
                                     <small class="text-muted">Cuti reguler yang diberikan setiap tahun</small>
                                 </div>
                             </label>
@@ -37,7 +38,8 @@
                                         <h5 class="fw-semibold mb-0">Cuti Sakit</h5>
                                         <i class="bi bi-check-circle-fill text-purple d-none"></i>
                                     </div>
-                                    <p class="text-sm mb-1">Memerlukan: <span class="fw-semibold text-purple">Surat Dokter</span></p>
+                                    <p class="text-sm mb-1">Memerlukan: <span class="fw-semibold text-purple">Surat
+                                            Dokter</span></p>
                                     <small class="text-muted">Cuti karena alasan kesehatan</small>
                                 </div>
                             </label>
@@ -47,14 +49,16 @@
                     <!-- Cuti Melahirkan -->
                     <div class="col-md-4">
                         <div class="position-relative">
-                            <input type="radio" name="jenis_cuti" id="cuti_melahirkan" value="melahirkan" class="d-none">
+                            <input type="radio" name="jenis_cuti" id="cuti_melahirkan" value="melahirkan"
+                                class="d-none">
                             <label for="cuti_melahirkan" class="card h-100 border-2 cursor-pointer">
                                 <div class="card-body">
                                     <div class="d-flex justify-content-between align-items-center mb-2">
                                         <h5 class="fw-semibold mb-0">Cuti Melahirkan</h5>
                                         <i class="bi bi-check-circle-fill text-purple d-none"></i>
                                     </div>
-                                    <p class="text-sm mb-1">Durasi: <span class="fw-semibold text-purple">3 Bulan</span></p>
+                                    <p class="text-sm mb-1">Durasi: <span class="fw-semibold text-purple">3 Bulan</span>
+                                    </p>
                                     <small class="text-muted">Cuti untuk persalinan dan pemulihan</small>
                                 </div>
                             </label>
@@ -63,7 +67,8 @@
                 </div>
 
                 <div class="d-flex justify-content-end mt-4">
-                    <button type="button" onclick="showForm()" class="btn btn-primary px-4" style="background-color: #7C3AED; border: none;">
+                    <button type="button" onclick="showForm()" class="btn btn-primary px-4"
+                        style="background-color: #7C3AED; border: none;">
                         Lanjutkan
                     </button>
                 </div>
@@ -92,7 +97,8 @@
                         </div>
                     </div>
 
-                    <form method="POST" action="{{ route('cuti.store') }}" id="cutiForm" data-hmin="{{ $hMinCuti }}" enctype="multipart/form-data">
+                    <form method="POST" action="{{ route('cuti.store') }}" id="cutiForm"
+                        data-hmin="{{ $hMinCuti }}" enctype="multipart/form-data">
                         @csrf
                         <input type="hidden" name="jenis_cuti" id="selectedJenisCuti">
 
@@ -101,123 +107,86 @@
                             <small class="text-muted">Registration Number: /Personnel-KMI/X/2024</small>
                         </div>
 
-                            <!-- Leave Info -->
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4 mb-6">
-                                <div class="flex items-center">
-                                    <label class="text-sm font-medium text-gray-700 w-32">Leave Period</label>
-                                    <span class="text-gray-600 mx-2">:</span>
-                                    <input type="text" value="2024/2025"
-                                        class="flex-1 px-4 py-2 border border-gray-300 rounded-lg bg-gray-50 text-sm"
-                                        readonly>
-                                </div>
-                                <div class="flex items-center">
-                                    <label class="text-sm font-medium text-gray-700">Total Leave day(s)</label>
-                                    <span class="text-gray-600 mx-2">:</span>
-                                    <input type="number" name="total_days"
-                                        class="w-32 px-4 py-2 border border-gray-300 rounded-lg focus:ring-1 focus:ring-purple-500 text-sm">
-                                    <span class="text-sm text-gray-600 ml-4">Work/Calendar Days</span>
-                                </div>
+
+                        <!-- Date Range -->
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <label class="form-label">On the date</label>
+                                <input type="date" name="start" id="start" class="form-control">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">until</label>
+                                <input type="date" name="end" id="end" class="form-control">
                             </div>
                         </div>
 
-                            <!-- Date Range -->
-                            <div class="flex items-center gap-4 mb-6">
-                                <div class="flex items-center flex-1">
-                                    <label class="text-sm font-medium text-gray-700 w-24">On the date</label>
-                                    <span class="text-gray-600 mx-2">:</span>
-                                    <input type="date" name="start" placeholder="mm/dd/yyyy"
-                                        id="start"
-                                        class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-1 focus:ring-purple-500 text-sm">
-                                </div>
-                                <div class="flex items-center flex-1">
-                                    <label class="text-sm font-medium text-gray-700 w-12">until</label>
-                                    <input type="date" name="end" placeholder="mm/dd/yyyy" id="end"
-                                        class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-1 focus:ring-purple-500 text-sm">
-                                </div>
-                            </div>
+                        <!-- Holiday -->
+                        <div class="mb-4">
+                            <label class="form-label">Holiday</label>
+                            <input type="text" name="holiday" class="form-control"
+                                placeholder="e.g., 09-10 November 2024">
+                        </div>
 
-                            <!-- Holiday -->
-                            <div class="flex items-center mb-6">
-                                <label class="text-sm font-medium text-gray-700 w-24">Holiday</label>
-                                <span class="text-gray-600 mx-2">:</span>
-                                <input type="text" name="holiday" placeholder="e.g., 09-10 November 2024"
-                                    class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-1 focus:ring-purple-500 text-sm">
-                            </div>
-
-                            <!-- Address -->
-                            <div class="flex mb-6">
-                                <label class="text-sm font-medium text-gray-700 w-32 pt-2">Address on leave</label>
-                                <span class="text-gray-600 mx-2 pt-2">:</span>
-                                <div class="flex-1">
-                                    <textarea name="address" rows="3"
-                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-1 focus:ring-purple-500 text-sm"
-                                        placeholder="Please fill out this field."></textarea>
-                                </div>
-                            </div>
+                        <!-- Address -->
+                        <div class="mb-4">
+                            <label class="form-label">Address on leave</label>
+                            <textarea name="address" rows="3" class="form-control" placeholder="Please fill out this field."></textarea>
+                        </div>
 
                         <!-- Approval -->
-                        <div class="row g-3 mb-4">
-                            <div class="col-md-4">
+                        <div class="row mb-4">
+                            <div class="col-md-6">
                                 <label class="form-label">Approval 1</label>
                                 <select name="approval_1" id="approval_1" class="form-select">
                                     @foreach ($approvals as $approval)
-                                    <option value="{{ $approval->id }}">{{ $approval->name }} - {{ $approval->profil->position }}</option>
-                                    @endforeach
-                                </select>
-                                <label for="approval_2">Approval 2</label>
-                                <select name="approval_1" id="approval_2">
-                                    @foreach ($approvals as $approval)
-                                    <option value="{{ $approval->id }}">{{ $approval->name }} - {{ $approval->profil->position }}</option>
+                                        <option value="{{ $approval->id }}">{{ $approval->name }} -
+                                            {{ $approval->profil->position }}</option>
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="col-md-4">
-                                <label class="form-label">Personal</label>
-                                <select name="personal" id="personal" class="form-select">
-                                    @foreach ($hrds as $personal)
-                                    <option value="{{ $personal->id }}">{{ $personal->name }} - {{ $personal->profil->position }}</option>
+                            <div class="col-md-6">
+                                <label class="form-label">Approval 2</label>
+                                <select name="approval_2" id="approval_2" class="form-select">
+                                    @foreach ($approvals as $approval)
+                                        <option value="{{ $approval->id }}">{{ $approval->name }} -
+                                            {{ $approval->profil->position }}</option>
                                     @endforeach
                                 </select>
                             </div>
                         </div>
 
-                            <!-- File Uploads -->
-                            <div id="fileUploadFields" class="space-y-4 mb-6">
-                                <div class="items-start" id="suratDokterField">
-                                    <label class="text-sm font-medium text-gray-700 w-32">Surat Dokter</label>
-                                    <span class="text-gray-600 mx-2">:</span>
-                                    <div class="flex-1">
-                                        <input type="file" name="doctor_letter"
-                                            class="block w-full text-sm text-gray-500
-                                        file:mr-4 file:py-2 file:px-4
-                                        file:rounded-lg file:border-0
-                                        file:text-sm file:font-medium
-                                        file:bg-gray-50 file:text-gray-700
-                                        hover:file:bg-gray-100">
-                                        <p class="mt-1 text-sm text-gray-500">Upload surat keterangan dokter
-                                            (PDF/JPG/PNG)</p>
-                                    </div>
-                                </div>
-                                <div class="items-start" id="suratKeteranganField">
-                                    <label class="text-sm font-medium text-gray-700 w-32">Surat Keterangan</label>
-                                    <span class="text-gray-600 mx-2">:</span>
-                                    <div class="flex-1">
-                                        <input type="file" name="supporting_letter"
-                                            class="block w-full text-sm text-gray-500
-                                        file:mr-4 file:py-2 file:px-4
-                                        file:rounded-lg file:border-0
-                                        file:text-sm file:font-medium
-                                        file:bg-gray-50 file:text-gray-700
-                                        hover:file:bg-gray-100">
-                                        <p class="mt-1 text-sm text-gray-500">Upload surat keterangan dokter/bidan
-                                            (PDF/JPG/PNG)</p>
-                                    </div>
-                                </div>
+                        <!-- HRD Section -->
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <label class="form-label">HRD Approval</label>
+                                <select name="hrd_approval" id="hrd_approval" class="form-select">
+                                    @foreach ($hrds as $hrd)
+                                        <option value="{{ $hrd->id }}">{{ $hrd->name }} - {{ $hrd->profil->position }}</option>
+                                    @endforeach
+                                </select>
                             </div>
+                        </div>
+
+                        <!-- File Uploads -->
+                        <div id="fileUploadFields" class="mb-4">
+                            <div class="mb-3" id="suratDokterField">
+                                <label class="form-label">Surat Dokter</label>
+                                <input type="file" name="doctor_letter" class="form-control">
+                                <small class="form-text text-muted">Upload surat keterangan dokter
+                                    (PDF/JPG/PNG)</small>
+                            </div>
+                            <div class="mb-3" id="suratKeteranganField">
+                                <label class="form-label">Surat Keterangan</label>
+                                <input type="file" name="supporting_letter" class="form-control">
+                                <small class="form-text text-muted">Upload surat keterangan dokter/bidan
+                                    (PDF/JPG/PNG)</small>
+                            </div>
+                        </div>
 
                         <!-- Submit Button -->
                         <div class="d-flex justify-content-end">
-                            <button type="submit" class="btn btn-primary px-4" style="background-color: #7C3AED; border: none;">
+                            <button type="submit" class="btn btn-primary px-4"
+                                style="background-color: #7C3AED; border: none;">
                                 Submit Leave Form
                             </button>
                         </div>
@@ -228,31 +197,38 @@
     </div>
 
     <style>
-    .text-purple {
-        color: #7C3AED;
-    }
-    .cursor-pointer {
-        cursor: pointer;
-    }
-    .card.border-2 {
-        border-width: 2px !important;
-        transition: all 0.3s ease;
-    }
-    .card.border-2:hover {
-        border-color: #7C3AED !important;
-        background-color: #F3E8FF;
-    }
-    input[type="radio"]:checked + label {
-        border-color: #7C3AED !important;
-        background-color: #F3E8FF;
-    }
-    input[type="radio"]:checked + label i.bi-check-circle-fill {
-        display: block !important;
-    }
-    .form-control:focus, .form-select:focus {
-        border-color: #7C3AED;
-        box-shadow: 0 0 0 0.25rem rgba(124, 58, 237, 0.25);
-    }
+        .text-purple {
+            color: #7C3AED;
+        }
+
+        .cursor-pointer {
+            cursor: pointer;
+        }
+
+        .card.border-2 {
+            border-width: 2px !important;
+            transition: all 0.3s ease;
+        }
+
+        .card.border-2:hover {
+            border-color: #7C3AED !important;
+            background-color: #F3E8FF;
+        }
+
+        input[type="radio"]:checked+label {
+            border-color: #7C3AED !important;
+            background-color: #F3E8FF;
+        }
+
+        input[type="radio"]:checked+label i.bi-check-circle-fill {
+            display: block !important;
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            border-color: #7C3AED;
+            box-shadow: 0 0 0 0.25rem rgba(124, 58, 237, 0.25);
+        }
     </style>
 
     <script>
@@ -273,43 +249,43 @@
             const jenisTitle = document.getElementById('jenisCutiTitle');
             switch (selectedCuti.value) {
                 case 'tahunan':
-                jenisTitle.textContent = 'ANNUAL LEAVE FORM';
-                        document.getElementById('suratKeteranganField').classList.add('d-none');
-                        document.getElementById('suratDokterField').classList.add('d-none');
-                        document.getElementById('selectedJenisCuti').value = 'tahunan';
+                    jenisTitle.textContent = 'ANNUAL LEAVE FORM';
+                    document.getElementById('suratKeteranganField').classList.add('d-none');
+                    document.getElementById('suratDokterField').classList.add('d-none');
+                    document.getElementById('selectedJenisCuti').value = 'tahunan';
 
-                        let start = document.getElementById("start");
-                        let end = document.getElementById("end");
+                    let start = document.getElementById("start");
+                    let end = document.getElementById("end");
 
-                        let today = new Date();
-                        let minDate = new Date();
-                        minDate.setDate(today.getDate() + parseInt(hminCuti)); // Gunakan nilai dari controller
+                    let today = new Date();
+                    let minDate = new Date();
+                    minDate.setDate(today.getDate() + parseInt(hminCuti)); // Gunakan nilai dari controller
 
-                        let formattedMinDate = minDate.toISOString().split("T")[0];
+                    let formattedMinDate = minDate.toISOString().split("T")[0];
 
-                        // Terapkan hanya untuk cuti tahunan
-                        end.setAttribute("min", formattedMinDate);
-                        start.setAttribute("min", formattedMinDate);
+                    // Terapkan hanya untuk cuti tahunan
+                    end.setAttribute("min", formattedMinDate);
+                    start.setAttribute("min", formattedMinDate);
                     break;
                 case 'sakit':
-                jenisTitle.textContent = 'SICK LEAVE FORM';
-                        document.getElementById('suratDokterField').classList.remove('d-none');
-                        document.getElementById('suratKeteranganField').classList.add('d-none');
-                        document.getElementById('selectedJenisCuti').value = 'sakit';
+                    jenisTitle.textContent = 'SICK LEAVE FORM';
+                    document.getElementById('suratDokterField').classList.remove('d-none');
+                    document.getElementById('suratKeteranganField').classList.add('d-none');
+                    document.getElementById('selectedJenisCuti').value = 'sakit';
 
-                        // Hapus aturan batasan tanggal
-                        document.getElementById("start").removeAttribute("min");
-                        document.getElementById("end").removeAttribute("min");
+                    // Hapus aturan batasan tanggal
+                    document.getElementById("start").removeAttribute("min");
+                    document.getElementById("end").removeAttribute("min");
                     break;
                 case 'melahirkan':
-                jenisTitle.textContent = 'MATERNITY LEAVE FORM';
-                        document.getElementById('suratKeteranganField').classList.remove('d-none');
-                        document.getElementById('suratDokterField').classList.add('d-none');
-                        document.getElementById('selectedJenisCuti').value = 'melahirkan';
+                    jenisTitle.textContent = 'MATERNITY LEAVE FORM';
+                    document.getElementById('suratKeteranganField').classList.remove('d-none');
+                    document.getElementById('suratDokterField').classList.add('d-none');
+                    document.getElementById('selectedJenisCuti').value = 'melahirkan';
 
-                        // Hapus aturan batasan tanggal
-                        document.getElementById("start").removeAttribute("min");
-                        document.getElementById("end").removeAttribute("min");
+                    // Hapus aturan batasan tanggal
+                    document.getElementById("start").removeAttribute("min");
+                    document.getElementById("end").removeAttribute("min");
                     break;
             }
 
