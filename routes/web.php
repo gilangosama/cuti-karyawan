@@ -34,7 +34,11 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/approval', [CutiApprovalController::class, 'index'])->name('cuti.approval.index');
     Route::put('/approval/{cuti}', [CutiApprovalController::class, 'update'])->name('cuti.approval.update');
-    Route::get('/approval/detail', [CutiApprovalController::class, 'detail'])->name('cuti.approval.detail');
+    // Route::get('/approval/detail', [CutiApprovalController::class, 'detail'])->name('cuti.approval.detail');
+
+    Route::get('/approval/detail', function () {
+        return view('cuti.approval.detail');
+    })->name('cuti.approval.detail');
 });
 
 Route::middleware(['auth'])->group(function () {
