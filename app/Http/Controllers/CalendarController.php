@@ -24,7 +24,6 @@ class CalendarController extends Controller
         $event->title = $request->input('title');
         $event->start = $request->input('start');
         $event->end = $request->input('end');
-        // $event->color = $request->input('color');
         $event->description = $request->input('description');
         $event->save();
 
@@ -37,7 +36,6 @@ class CalendarController extends Controller
         $event->title = $request->input('title');
         $event->start = $request->input('start');
         $event->end = $request->input('end');
-        // $event->color = $request->input('color');
         $event->description = $request->input('description');
         $event->save();
 

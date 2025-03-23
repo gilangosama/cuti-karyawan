@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Cuti;
 use App\Models\Event;
 use App\Models\SetupApp;
+use App\Models\User;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Illuminate\Support\Facades\Auth;
@@ -20,17 +21,14 @@ class CutiController extends Controller
 
     public function create()
     {
-        return view('cuti.create');
+        $approvals = User::with('profil')->where('role', 'approval')->get();
+        $hrds = User::with('profil')->where('role', 'hrd')->get(); // Personal
+        $hMinCuti = SetupApp::first()->cuti;
+        return view('cuti.create', compact('approvals', 'hrds', 'hMinCuti'));
     }
 
     public function store(Request $request)
     {
-        // $data = $request->validate([
-        //     'jenis_cuti' => 'required|string',
-        //     'start' => 'required|date',
-        //     'end' => 'required|date|after_or_equal:start',
-        //     'description' => 'required|string',
-        // ]);
         $start = Carbon::parse($request->start);
         $end = Carbon::parse($request->end);
         // Buat periode antara tanggal mulai dan selesai
@@ -38,16 +36,18 @@ class CutiController extends Controller
 
         // Ambil daftar hari libur dari tabel Event
         $hariLibur = Event::pluck('start')->toArray();
+        // hari libur di hari minggu
         
+
+        // dd('hari libur event :' . $hariLibur);
         // Ambil daftar hari kerja dari database
         $hariKerja = SetupApp::first()->days;
-        
+
         // Ubah string hari kerja menjadi array integer
         $hariKerja = array_map('intval', explode(',', $hariKerja));
-        
-        
+
         $totalHari = 0;
-        
+
         foreach ($periode as $tanggal) {
             // Pastikan tanggal bukan hari libur dan termasuk hari kerja
             if (in_array($tanggal->dayOfWeek, $hariKerja) && !in_array($tanggal->toDateString(), $hariLibur)) {
@@ -58,11 +58,10 @@ class CutiController extends Controller
         $kouta = Auth::user()->profil->kouta;
 
         if ($totalHari > $kouta) {
-            dd("PEringatan: Waktu cuti yang diambil melebihi batas sisa waktu cuti.");
+            dd("Peringatan: Waktu cuti yang diambil melebihi batas sisa waktu cuti.");
             return redirect()->route('cuti.index')->with('error', 'Waktu cuti yang diambil melebihi batas sisa waktu cuti.');
-
         }
-        
+
         // Debugging dengan format yang benar
         dd(
             "Awal Cuti: " . $start->toDateString(),

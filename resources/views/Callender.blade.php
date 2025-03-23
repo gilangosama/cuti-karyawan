@@ -23,6 +23,7 @@
                                 </div>
                                 <div class="modal-body">
                                     <form id='setupAppForm'>
+                                        @csrf
                                         <div class="mb-3">
                                             <label for="cuti" class="form-label">Minimal Hari Pengajuan Cuti</label>
                                             <input type="number" class="form-control" id="cuti" required>
@@ -97,6 +98,7 @@
                 </div>
                 <div class="modal-body">
                     <form id="eventForm">
+                        @csrf
                         <input type="hidden" id="eventId">
                         <div class="mb-3">
                             <label for="title" class="form-label">Title</label>
@@ -179,7 +181,12 @@
                             'X-CSRF-TOKEN': '{{ csrf_token() }}'
                         },
                         body: JSON.stringify(eventData)
-                    }).then(response => response.json())
+                    }).then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
                     .then(data => {
                         if (data.success) {
                             alert('Event saved successfully!');
@@ -188,6 +195,10 @@
                         } else {
                             alert('Failed to save event.');
                         }
+                    })
+                    .catch(error => {
+                        console.error('There was a problem with the fetch operation:', error);
+                        alert('Failed to save event.');
                     });
             });
 
@@ -200,7 +211,12 @@
                                 'Content-Type': 'application/json',
                                 'X-CSRF-TOKEN': '{{ csrf_token() }}'
                             }
-                        }).then(response => response.json())
+                        }).then(response => {
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok');
+                            }
+                            return response.json();
+                        })
                         .then(data => {
                             if (data.success) {
                                 alert('Event deleted successfully!');
@@ -209,6 +225,10 @@
                             } else {
                                 alert('Failed to delete event.');
                             }
+                        })
+                        .catch(error => {
+                            console.error('There was a problem with the fetch operation:', error);
+                            alert('Failed to delete event.');
                         });
                 }
             });
@@ -231,7 +251,12 @@
                             izin: izin,
                             days: selectedDays
                         })
-                    }).then(response => response.json())
+                    }).then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
                     .then(data => {
                         if (data.success) {
                             alert('Pengaturan disimpan!');
@@ -240,12 +265,21 @@
                         } else {
                             alert('Gagal menyimpan pengaturan.');
                         }
+                    })
+                    .catch(error => {
+                        console.error('There was a problem with the fetch operation:', error);
+                        alert('Gagal menyimpan pengaturan.');
                     });
             });
 
             // Load pengaturan dari server
             fetch('/setup-app')
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
                 .then(data => {
                     if (data) {
                         $('#cuti').val(data.cuti);
@@ -257,6 +291,10 @@
                         });
                         updateSetupInfo(data.cuti, selectedDays);
                     }
+                })
+                .catch(error => {
+                    console.error('There was a problem with the fetch operation:', error);
+                    alert('Gagal memuat pengaturan.');
                 });
 
             function updateSetupInfo(cuti, selectedDays) {

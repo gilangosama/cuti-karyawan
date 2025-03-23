@@ -107,7 +107,8 @@
                             </div>
                         </div>
 
-                        <form method="POST" action="{{ route('cuti.store') }}" enctype="multipart/form-data">
+                        <form method="POST" action="{{ route('cuti.store') }}" id="cutiForm"
+                            data-hmin="{{ $hMinCuti }}" enctype="multipart/form-data">
                             @csrf
                             <input type="hidden" name="jenis_cuti" id="selectedJenisCuti">
                             <!-- Nomor Registrasi -->
@@ -144,8 +145,7 @@
                                 <div class="flex items-center flex-1">
                                     <label class="text-sm font-medium text-gray-700 w-24">On the date</label>
                                     <span class="text-gray-600 mx-2">:</span>
-                                    <input type="date" name="start" placeholder="mm/dd/yyyy"
-                                        id="start"
+                                    <input type="date" name="start" placeholder="mm/dd/yyyy" id="start"
                                         class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-1 focus:ring-purple-500 text-sm">
                                 </div>
                                 <div class="flex items-center flex-1">
@@ -172,6 +172,35 @@
                                         class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-1 focus:ring-purple-500 text-sm"
                                         placeholder="Please fill out this field."></textarea>
                                 </div>
+                            </div>
+
+                            {{-- Approval --}}
+                            <div class="md:flex gap-2">
+                                <label for="approval_1">Approval 1</label>
+                                <select name="approval_1" id="approval_1">
+                                    @foreach ($approvals as $approval)
+                                        <option value="{{ $approval->id }}">{{ $approval->name }} -
+                                            {{ $approval->profil->position }}</option>
+                                    @endforeach
+                                </select>
+                                <label for="approval_2">Approval 2</label>
+                                <select name="approval_1" id="approval_2">
+                                    @foreach ($approvals as $approval)
+                                        <option value="{{ $approval->id }}">{{ $approval->name }} -
+                                            {{ $approval->profil->position }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            {{-- personal --}}
+                            <div class="flex">
+                                <label for="personal">Personal</label>
+                                <select name="personal" id="personal">
+                                    @foreach ($hrds as $personal)
+                                        <option value="{{ $personal->id }}">{{ $personal->name }} -
+                                            {{ $personal->profil->position }}</option>
+                                    @endforeach
+                                </select>
                             </div>
 
                             <!-- File Uploads -->
@@ -208,6 +237,8 @@
                                 </div>
                             </div>
 
+
+
                             <!-- Submit Button -->
                             <div class="flex justify-end">
                                 <button type="submit"
@@ -236,93 +267,108 @@
             formCuti.classList.remove('hidden');
 
             // Update judul form sesuai jenis cuti
-            const jenisTitle = document.getElementById('jenisCutiTitle');
-            switch (selectedCuti.value) {
-                case 'tahunan':
-                    jenisTitle.textContent = 'ANNUAL LEAVE FORM';
-                    document.getElementById('suratKeteranganField').classList.add('hidden');
-                    document.getElementById('suratDokterField').classList.add('hidden');
-                    document.getElementById('selectedJenisCuti').value = 'tahunan';
-                    break;
-                case 'sakit':
-                    jenisTitle.textContent = 'SICK LEAVE FORM';
-                    // Tampilkan field upload surat dokter
-                    document.getElementById('suratDokterField').classList.remove('hidden');
-                    document.getElementById('suratKeteranganField').classList.add('hidden');
-                    document.getElementById('selectedJenisCuti').value = 'sakit';
+            <
+            script >
+                // Ambil hmin dari controller (misal dikirim dalam format JSON ke dalam elemen data attribute)
+                let hminCuti = document.getElementById("cutiForm").dataset.hmin || 17; // Default 17 jika tidak ada data
 
-                    break;
-                case 'melahirkan':
-                    jenisTitle.textContent = 'MATERNITY LEAVE FORM';
-                    // Tampilkan field surat keterangan dokter/bidan
-                    document.getElementById('suratKeteranganField').classList.remove('hidden');
-                    document.getElementById('suratDokterField').classList.add('hidden');
-                    document.getElementById('selectedJenisCuti').value = 'melahirkan';
-                    break;
-            }
+            let selectedCuti = document.getElementById("selectedCuti");
+            let jenisTitle = document.getElementById("jenisTitle");
 
-            // Sembunyikan pilihan jenis cuti
-            document.getElementById('jenisCutiSelection').classList.add('hidden');
+            selectedCuti.addEventListener("change", function() {
+                switch (selectedCuti.value) {
+                    case 'tahunan':
+                        jenisTitle.textContent = 'ANNUAL LEAVE FORM';
+                        document.getElementById('suratKeteranganField').classList.add('hidden');
+                        document.getElementById('suratDokterField').classList.add('hidden');
+                        document.getElementById('selectedJenisCuti').value = 'tahunan';
 
-            // Tambahkan tombol kembali
-            const backButton = document.createElement('button');
-            backButton.innerHTML = `
-                <button type="button" onclick="backToSelection()" class="flex items-center text-gray-600 hover:text-gray-800 mb-4">
-                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-                    </svg>
-                    Kembali ke Pilihan Cuti
-                </button>
-            `;
-            formCuti.insertBefore(backButton, formCuti.firstChild);
+                        let start = document.getElementById("start");
+                        let end = document.getElementById("end");
 
-            // Scroll ke form
-            formCuti.scrollIntoView({
-                behavior: 'smooth'
+                        let today = new Date();
+                        let minDate = new Date();
+                        minDate.setDate(today.getDate() + parseInt(hminCuti)); // Gunakan nilai dari controller
+
+                        let formattedMinDate = minDate.toISOString().split("T")[0];
+
+                        // Terapkan hanya untuk cuti tahunan
+                        end.setAttribute("min", formattedMinDate);
+                        start.setAttribute("min", formattedMinDate);
+                        break;
+
+                    case 'sakit':
+                        jenisTitle.textContent = 'SICK LEAVE FORM';
+                        document.getElementById('suratDokterField').classList.remove('hidden');
+                        document.getElementById('suratKeteranganField').classList.add('hidden');
+                        document.getElementById('selectedJenisCuti').value = 'sakit';
+
+                        // Hapus aturan batasan tanggal
+                        document.getElementById("start").removeAttribute("min");
+                        document.getElementById("end").removeAttribute("min");
+                        break;
+
+                    case 'melahirkan':
+                        jenisTitle.textContent = 'MATERNITY LEAVE FORM';
+                        document.getElementById('suratKeteranganField').classList.remove('hidden');
+                        document.getElementById('suratDokterField').classList.add('hidden');
+                        document.getElementById('selectedJenisCuti').value = 'melahirkan';
+
+                        // Hapus aturan batasan tanggal
+                        document.getElementById("start").removeAttribute("min");
+                        document.getElementById("end").removeAttribute("min");
+                        break;
+                }
             });
+    </script>
 
-            // Set nilai hidden input untuk jenis cuti
-            document.getElementById('selectedJenisCuti').value = selectedCuti.value;
-        }
+    // Sembunyikan pilihan jenis cuti
+    document.getElementById('jenisCutiSelection').classList.add('hidden');
 
-        function backToSelection() {
-            // Tampilkan kembali pilihan jenis cuti
-            document.getElementById('jenisCutiSelection').classList.remove('hidden');
+    // Tambahkan tombol kembali
+    const backButton = document.createElement('button');
+    backButton.innerHTML = `
+    <button type="button" onclick="backToSelection()"
+        class="flex items-center text-gray-600 hover:text-gray-800 mb-4">
+        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+        </svg>
+        Kembali ke Pilihan Cuti
+    </button>
+    `;
+    formCuti.insertBefore(backButton, formCuti.firstChild);
 
-            // Sembunyikan form
-            const formCuti = document.getElementById('formCuti');
-            formCuti.classList.add('hidden');
+    // Scroll ke form
+    formCuti.scrollIntoView({
+    behavior: 'smooth'
+    });
 
-            // Reset semua field tambahan
-            document.getElementById('suratDokterField').classList.add('hidden');
-            document.getElementById('suratKeteranganField').classList.add('hidden');
-            document.getElementById('alasanPentingField').classList.add('hidden');
+    // Set nilai hidden input untuk jenis cuti
+    document.getElementById('selectedJenisCuti').value = selectedCuti.value;
+    }
 
-            // Scroll ke pilihan jenis cuti
-            document.getElementById('jenisCutiSelection').scrollIntoView({
-                behavior: 'smooth'
-            });
-        }
+    function backToSelection() {
+    // Tampilkan kembali pilihan jenis cuti
+    document.getElementById('jenisCutiSelection').classList.remove('hidden');
+
+    // Sembunyikan form
+    const formCuti = document.getElementById('formCuti');
+    formCuti.classList.add('hidden');
+
+    // Reset semua field tambahan
+    document.getElementById('suratDokterField').classList.add('hidden');
+    document.getElementById('suratKeteranganField').classList.add('hidden');
+    document.getElementById('alasanPentingField').classList.add('hidden');
+
+    // Scroll ke pilihan jenis cuti
+    document.getElementById('jenisCutiSelection').scrollIntoView({
+    behavior: 'smooth'
+    });
+    }
     </script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            let start = document.getElementById("start");
-            let end = document.getElementById("end");
 
-            let today = new Date();
-            // let maxDate = new Date();
-            // maxDate.setDate(today.getDate() + 17); // Tambahkan 17 hari dari hari ini
-
-            // let formattedMaxDate = maxDate.toISOString().split("T")[0];
-
-            // inputTanggal.setAttribute("max", formattedMaxDate);
-            let minDate = new Date();
-            minDate.setDate(today.getDate() + 17); // Minimal 17 hari dari hari ini
-
-            let formattedMinDate = minDate.toISOString().split("T")[0];
-
-            end.setAttribute("min", formattedMinDate);
-            start.setAttribute("min", formattedMinDate);
 
         });
     </script>

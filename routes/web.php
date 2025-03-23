@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CalendarController;
+use App\Http\Controllers\CutiApprovalController;
 use App\Http\Controllers\CutiController;
 use App\Http\Controllers\SetupAppController;
 use Illuminate\Support\Facades\Route;
@@ -29,21 +30,16 @@ Route::middleware('auth')->group(function () {
     Route::get('/cuti/{cuti}/edit', [CutiController::class, 'edit'])->name('cuti.edit');
     Route::put('/cuti/{cuti}', [CutiController::class, 'update'])->name('cuti.update');
     Route::delete('/cuti/{cuti}', [CutiController::class, 'destroy'])->name('cuti.destroy');
+
+    Route::get('/approval', [CutiApprovalController::class, 'index'])->name('cuti.approval.index');
+    Route::put('/approval/{cuti}', [CutiApprovalController::class, 'update'])->name('cuti.approval.update');
+    Route::get('/approval/detail', [CutiApprovalController::class, 'detail'])->name('cuti.approval.detail');
 });
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
-
-    Route::get('/cuti', function () {
-        return view('cuti.index');
-    })->name('cuti.index');
-
-    Route::get('/cuti/create', function () {
-        return view('cuti.create');
-    })->name('cuti.create');
-});
 
     Route::get('/profile', function () {
         return view('profile.index');
