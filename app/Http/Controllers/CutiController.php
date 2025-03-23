@@ -24,6 +24,7 @@ class CutiController extends Controller
         $approvals = User::with('profil')->where('role', 'approval')->get();
         $hrds = User::with('profil')->where('role', 'hrd')->get(); // Personal
         $hMinCuti = SetupApp::first()->cuti;
+        // dd($hMinCuti);
         return view('cuti.create', compact('approvals', 'hrds', 'hMinCuti'));
     }
 

@@ -46,14 +46,18 @@ Route::middleware(['auth'])->group(function () {
         return view('cuti.index');
     })->name('cuti.index');
 
-    Route::get('/cuti/create', function () {
-        return view('cuti.create');
-    })->name('cuti.create');
+    // Route::get('/cuti/create', function () {
+    //     return view('cuti.create');
+    // })->name('cuti.create');
 });
 
     Route::get('/profile', function () {
         return view('profile.index');
     })->name('profile');
+
+    Route::get('/approval/hrd', function () {
+        return view('cuti/approval/hrd');
+    })->name('approval.hrd');
 
 Route::get('/hrd', function () {
     return view('hrd.index');
