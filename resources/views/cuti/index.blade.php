@@ -61,10 +61,13 @@
                                     <td>{{ $cuti->start }} - {{ $cuti->end }}</td>
                                     <td>{{ $cuti->total_hari }} Hari</td>
                                     <td>
-                                        <span class="badge"
-                                            style="background-color: {{ $cuti->status == 'pending' ? '#FCD34D' : '#10B981' }}; color: {{ $cuti->status == 'pending' ? '#92400E' : '#FFFFFF' }};">
-                                            {{ ucfirst($cuti->status) }}
-                                        </span>
+                                        @if ($cuti->status == 'pending')
+                                            <span class="badge bg-primary">Pending</span>
+                                        @elseif ($cuti->status == 'approved')
+                                            <span class="badge bg-success">Disetujui</span>
+                                        @elseif ($cuti->status == 'rejected')
+                                            <span class="badge bg-danger">Ditolak</span>
+                                        @endif
                                     </td>
                                 </tr>
                             @empty

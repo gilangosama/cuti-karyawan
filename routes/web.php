@@ -5,6 +5,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\CutiApprovalController;
 use App\Http\Controllers\CutiController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\SetupAppController;
 use App\Http\Controllers\HrdController;
 use App\Http\Controllers\UserController;
@@ -45,9 +46,8 @@ Route::middleware('auth')->group(function () {
 
 // ini punya viky
 Route::middleware(['auth'])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard/{id}/detail', [DashboardController::class, 'detail'])->name('dashboard.detail');
 
     Route::get('/hrd/index', [UserController::class, 'index'])->name('hrd.index');
     Route::get('/hrd/detail', [UserController::class, 'detail'])->name('hrd.detail');

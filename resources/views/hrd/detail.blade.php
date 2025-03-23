@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="d-flex justify-content-between align-items-center">
             <h2 class="h4 fw-semibold mb-0">Detail Pengajuan Cuti</h2>
-            <a href="{{ route('cuti.approval.index') }}" class="btn btn-light btn-sm">
+            <a href="{{ route('dashboard') }}" class="btn btn-light btn-sm">
                 Kembali
             </a>
         </div>
@@ -17,15 +17,15 @@
                     <div class="row g-3">
                         <div class="col-md-6">
                             <label class="form-label small fw-medium text-muted">Nama Karyawan</label>
-                            <p class="mb-0" id="nama"></p>
+                            <p class="mb-0" id="nama">{{ $profil->user->name }}</p>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label small fw-medium text-muted">Departemen</label>
-                            <p class="mb-0" id="departemen"></p>
+                            <p class="mb-0" id="departemen">{{ $profil->position }}</p>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label small fw-medium text-muted">Jabatan</label>
-                            <p class="mb-0"></p>
+                            <p class="mb-0">{{ $profil->section }}</p>
                         </div>
                     </div>
                 </div>
@@ -36,39 +36,36 @@
                     <div class="row g-3">
                         <div class="col-md-6">
                             <label class="form-label small fw-medium text-muted">Jenis Cuti</label>
-                            <p class="mb-0" id="jenisCuti"></p>
+                            <p class="mb-0" id="jenisCuti">{{ $cuti->jenis }}</p>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label small fw-medium text-muted">Tanggal Cuti</label>
-                            <p class="mb-0" id="tanggalCuti"></p>
+                            <p class="mb-0" id="tanggalCuti">{{ $cuti->start }} - {{ $cuti->end }}</p>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label small fw-medium text-muted">Durasi</label>
-                            <p class="mb-0" id="durasi">Hari</p>
+                            <p class="mb-0" id="durasi">{{ $cuti->total_hari }} Hari</p>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label small fw-medium text-muted">Alamat Selama Cuti</label>
-                            <p class="mb-0" id="alamat"></p>
+                            <p class="mb-0" id="alamat">{{ $cuti->alamat }}</p>
                         </div>
                     </div>
                 </div>
 
                 <!-- Dokumen Pendukung -->
-                <div class="mb-4">
-                    <h5 class="fw-medium mb-3">Dokumen Pendukung</h5>
-                    <div class="border rounded-3 p-3">
-                        <a href="" target="_blank" class="text-decoration-none" style="color: #7C3AED;">
-                            <i class="bi bi-download me-1"></i>
-                            Lihat Surat Dokter
-                        </a>
+                @if (!empty($cuti->foto))
+                    <div class="mb-4">
+                        <h5 class="fw-medium mb-3">Dokumen Pendukung</h5>
+                        <div class="border rounded-3 p-3">
+                            <a href="" target="_blank" class="text-decoration-none" style="color: #7C3AED;">
+                                <i class="bi bi-download me-1"></i>
+                                Lihat Surat Dokter
+                            </a>
+                        </div>
                     </div>
-                </div>
+                @endif
 
-                <!-- Tombol Aksi -->
-                <div class="d-flex justify-content-end gap-2">
-                    <button onclick="rejectLeave()" class="btn btn-danger">Tolak</button>
-                    <button onclick="approveLeave()" class="btn btn-success">Setujui</button>
-                </div>
             </div>
         </div>
     </div>
