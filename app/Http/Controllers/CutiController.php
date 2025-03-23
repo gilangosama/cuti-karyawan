@@ -30,38 +30,46 @@ class CutiController extends Controller
 
     public function store(Request $request)
     {
-        $start = Carbon::parse($request->start);
-        $end = Carbon::parse($request->end);
-        // Buat periode antara tanggal mulai dan selesai
-        $periode = CarbonPeriod::create($start, $end);
+        $jenisCuti = $request->jenis_cuti;
+        if ($jenisCuti == 'tahunan') {
+            $start = Carbon::parse($request->start);
+            $end = Carbon::parse($request->end);
+            // Buat periode antara tanggal mulai dan selesai
+            $periode = CarbonPeriod::create($start, $end);
 
-        // Ambil daftar hari libur dari tabel Event
-        $hariLibur = Event::pluck('start')->toArray();
-        // hari libur di hari minggu
-        
+            // Ambil daftar hari libur dari tabel Event
+            $hariLibur = Event::pluck('start')->toArray();
+            // hari libur di hari minggu
 
-        // dd('hari libur event :' . $hariLibur);
-        // Ambil daftar hari kerja dari database
-        $hariKerja = SetupApp::first()->days;
+            // Ambil daftar hari kerja dari database
+            $hariKerja = SetupApp::first()->days;
 
-        // Ubah string hari kerja menjadi array integer
-        $hariKerja = array_map('intval', explode(',', $hariKerja));
+            // Ubah string hari kerja menjadi array integer
+            $hariKerja = array_map('intval', explode(',', $hariKerja));
 
-        $totalHari = 0;
+            $totalHari = $request->total_hari;
 
-        foreach ($periode as $tanggal) {
-            // Pastikan tanggal bukan hari libur dan termasuk hari kerja
-            if (in_array($tanggal->dayOfWeek, $hariKerja) && !in_array($tanggal->toDateString(), $hariLibur)) {
-                $totalHari++;
+            // foreach ($periode as $tanggal) {
+            //     // Pastikan tanggal bukan hari libur dan termasuk hari kerja
+            //     if (in_array($tanggal->dayOfWeek, $hariKerja) && !in_array($tanggal->toDateString(), $hariLibur)) {
+            //         $totalHari++;
+            //     }
+            // }
+
+            $kouta = Auth::user()->profil->kouta;
+
+            if ($totalHari > $kouta) {
+                dd("Peringatan: Waktu cuti yang diambil melebihi batas sisa waktu cuti.");
+                return redirect()->route('cuti.index')->with('error', 'Waktu cuti yang diambil melebihi batas sisa waktu cuti.');
             }
+
+        } else if ($jenisCuti == 'sakit') {
+            dd('sakit');
+        } else {
+            dd('melahirkan');
         }
 
-        $kouta = Auth::user()->profil->kouta;
 
-        if ($totalHari > $kouta) {
-            dd("Peringatan: Waktu cuti yang diambil melebihi batas sisa waktu cuti.");
-            return redirect()->route('cuti.index')->with('error', 'Waktu cuti yang diambil melebihi batas sisa waktu cuti.');
-        }
 
         // Debugging dengan format yang benar
         dd(

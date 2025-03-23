@@ -20,11 +20,18 @@ class CalendarController extends Controller
 
     public function store(Request $request)
     {
+        $data = $request->validate([
+            'title' => 'required|string|max:255',
+            'start' => 'required|date',
+            'end' => 'nullable|date|after_or_equal:start',
+            'description' => 'nullable|string',
+        ]);
+
         $event = new Event();
-        $event->title = $request->input('title');
-        $event->start = $request->input('start');
-        $event->end = $request->input('end');
-        $event->description = $request->input('description');
+        $event->title = $data['title'];
+        $event->start = $data['start'];
+        $event->end = $data['end'];
+        $event->description = $data['description'];
         $event->save();
 
         return response()->json(['success' => true]);
@@ -32,11 +39,18 @@ class CalendarController extends Controller
 
     public function update(Request $request, $id)
     {
+        $data = $request->validate([
+            'title' => 'required|string|max:255',
+            'start' => 'required|date',
+            'end' => 'nullable|date|after_or_equal:start',
+            'description' => 'nullable|string',
+        ]);
+
         $event = Event::find($id);
-        $event->title = $request->input('title');
-        $event->start = $request->input('start');
-        $event->end = $request->input('end');
-        $event->description = $request->input('description');
+        $event->title = $data['title'];
+        $event->start = $data['start'];
+        $event->end = $data['end'];
+        $event->description = $data['description'];
         $event->save();
 
         return response()->json(['success' => true]);

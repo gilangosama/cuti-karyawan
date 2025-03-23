@@ -353,5 +353,5 @@
             });
         }
     </script>
-    
+
 </x-app-layout>

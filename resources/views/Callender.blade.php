@@ -28,10 +28,10 @@
                                             <label for="cuti" class="form-label">Minimal Hari Pengajuan Cuti</label>
                                             <input type="number" class="form-control" id="cuti" required>
                                         </div>
-                                        <div class="mb-3">
+                                        {{-- <div class="mb-3">
                                             <label for="izin" class="form-label">Izin</label>
                                             <input type="number" class="form-control" id="izin" required>
-                                        </div>
+                                        </div> --}}
                                         <div class="mb-3">
                                             <label>Pilih Hari Kerja:</label>
                                             <div class="list-group">
@@ -248,7 +248,7 @@
                         },
                         body: JSON.stringify({
                             cuti: cuti,
-                            izin: izin,
+                            izin: 0,
                             days: selectedDays
                         })
                     }).then(response => {
