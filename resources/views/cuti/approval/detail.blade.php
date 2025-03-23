@@ -1,89 +1,88 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex justify-between items-center">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                {{ __('Detail Pengajuan Cuti') }}
-            </h2>
-            <a href="{{ route('cuti.approval.index') }}" class="px-4 py-2 text-sm bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200">
+        <div class="d-flex justify-content-between align-items-center">
+            <h2 class="h4 fw-semibold mb-0">Detail Pengajuan Cuti</h2>
+            <a href="{{ route('cuti.approval.index') }}" 
+               class="btn btn-light btn-sm">
                 Kembali
             </a>
         </div>
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-xl rounded-xl">
-                <div class="p-6">
-                    <!-- Informasi Karyawan -->
-                    <div class="mb-8">
-                        <h3 class="text-lg font-medium text-gray-900 mb-4">Informasi Karyawan</h3>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700">Nama Karyawan</label>
-                                <p class="mt-1 text-sm text-gray-900" id="nama"></p>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700">Departemen</label>
-                                <p class="mt-1 text-sm text-gray-900" id="departemen"></p>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700">Jabatan</label>
-                                <p class="mt-1 text-sm text-gray-900"></p>
-                            </div>
+    <div class="container-fluid py-4">
+        <div class="card border-0 shadow-sm" style="border-radius: 16px;">
+            <div class="card-body p-4">
+                <!-- Informasi Karyawan -->
+                <div class="mb-4">
+                    <h5 class="fw-medium mb-3">Informasi Karyawan</h5>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label small fw-medium text-muted">Nama Karyawan</label>
+                            <p class="mb-0" id="nama"></p>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-medium text-muted">Departemen</label>
+                            <p class="mb-0" id="departemen"></p>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-medium text-muted">Jabatan</label>
+                            <p class="mb-0"></p>
                         </div>
                     </div>
+                </div>
 
-                    <!-- Informasi Cuti -->
-                    <div class="mb-8">
-                        <h3 class="text-lg font-medium text-gray-900 mb-4">Informasi Cuti</h3>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700">Jenis Cuti</label>
-                                <p class="mt-1 text-sm text-gray-900" id="jenisCuti"></p>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700">Tanggal Cuti</label>
-                                <p class="mt-1 text-sm text-gray-900" id="tanggalCuti">
-                                    
-                                </p>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700">Durasi</label>
-                                <p class="mt-1 text-sm text-gray-900" id="durasi">Hari</p>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700">Alamat Selama Cuti</label>
-                                <p class="mt-1 text-sm text-gray-900" id="alamat"></p>
-                            </div>
+                <!-- Informasi Cuti -->
+                <div class="mb-4">
+                    <h5 class="fw-medium mb-3">Informasi Cuti</h5>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label small fw-medium text-muted">Jenis Cuti</label>
+                            <p class="mb-0" id="jenisCuti"></p>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-medium text-muted">Tanggal Cuti</label>
+                            <p class="mb-0" id="tanggalCuti"></p>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-medium text-muted">Durasi</label>
+                            <p class="mb-0" id="durasi">Hari</p>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-medium text-muted">Alamat Selama Cuti</label>
+                            <p class="mb-0" id="alamat"></p>
                         </div>
                     </div>
+                </div>
 
-                    <!-- Dokumen Pendukung -->
-                    <div class="mb-8">
-                        <h3 class="text-lg font-medium text-gray-900 mb-4">Dokumen Pendukung</h3>
-                        <div class="border border-gray-200 rounded-lg p-4">
-                            <a href="" target="_blank" class="text-purple-600 hover:text-purple-900">
-                                <svg class="h-5 w-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13l-3 3m0 0l-3-3m3 3V8m0 13a9 9 0 110-18 9 9 0 010 18z" />
-                                </svg>
-                                Lihat Surat Dokter
-                            </a>
-                        </div>
+                <!-- Dokumen Pendukung -->
+                <div class="mb-4">
+                    <h5 class="fw-medium mb-3">Dokumen Pendukung</h5>
+                    <div class="border rounded-3 p-3">
+                        <a href="" target="_blank" class="text-decoration-none" style="color: #7C3AED;">
+                            <i class="bi bi-download me-1"></i>
+                            Lihat Surat Dokter
+                        </a>
                     </div>
+                </div>
 
-                    <!-- Tombol Aksi -->
-                    <div class="flex justify-end space-x-4">
-                        <button onclick="rejectLeave()" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">
-                            Tolak
-                        </button>
-                        <button onclick="approveLeave()" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">
-                            Setujui
-                        </button>
-                    </div>
+                <!-- Tombol Aksi -->
+                <div class="d-flex justify-content-end gap-2">
+                    <button onclick="rejectLeave()" class="btn btn-danger">Tolak</button>
+                    <button onclick="approveLeave()" class="btn btn-success">Setujui</button>
                 </div>
             </div>
         </div>
     </div>
+
+    <style>
+    .btn-light {
+        background-color: #F3F4F6;
+        border-color: #E5E7EB;
+    }
+    .btn-light:hover {
+        background-color: #E5E7EB;
+    }
+    </style>
 
     @push('scripts')
     <script>
@@ -101,5 +100,14 @@
             }
         }
     </script>
+    @endpush
+
+    @push('styles')
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
+    @endpush
+
+    @push('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     @endpush
 </x-app-layout>

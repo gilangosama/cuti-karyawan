@@ -12,123 +12,182 @@
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
-        <!-- Scripts -->
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
-        @stack('head')
-    </head>
-    <body class="font-sans antialiased">
-        <div class="min-h-screen bg-gray-100">
-            <!-- Sidebar -->
-            <div class="fixed inset-y-0 left-0 w-64 bg-white shadow-lg">
-                <div class="flex flex-col h-full">
-                    <!-- Logo -->
-                    <div class="flex items-center justify-center h-20 border-b">
-                        <img src="{{ asset('images/logo.jpg') }}" alt="Logo" class="h-12">
-                    </div>
+        <!-- Bootstrap CSS & Icons -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
 
-                    <!-- Navigation -->
-                    <nav class="flex-1 px-4 py-6 space-y-1">
-                        <a href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard') ? 'bg-purple-50 text-purple-600' : 'text-gray-600 hover:bg-gray-50' }} flex items-center px-4 py-3 text-sm font-medium rounded-lg group">
-                            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                            </svg>
+        @stack('styles')
+    </head>
+    <body>
+        <div class="d-flex">
+            <!-- Sidebar -->
+            <div class="d-flex flex-column flex-shrink-0 bg-white shadow" style="width: 280px; height: 100vh; position: fixed;">
+                <!-- Logo -->
+                <div class="text-center border-bottom p-3">
+                    <img src="{{ asset('images/logo.jpg') }}" alt="Logo" height="48">
+                </div>
+
+                <!-- Navigation -->
+                <ul class="nav nav-pills flex-column mb-auto p-3">
+                    <li class="nav-item mb-2">
+                        <a href="{{ route('dashboard') }}" 
+                           class="nav-link {{ request()->routeIs('dashboard') ? 'active bg-purple' : 'text-dark' }}">
+                            <i class="bi bi-house-door me-2"></i>
                             Dashboard
                         </a>
+                    </li>
 
-                        <a href="{{ route('cuti.index') }}" class="{{ request()->routeIs('cuti.index') ? 'bg-purple-50 text-purple-600' : 'text-gray-600 hover:bg-gray-50' }} flex items-center px-4 py-3 text-sm font-medium rounded-lg group">
-                            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                            </svg>
+                    <li class="nav-item mb-2">
+                        <a href="{{ route('cuti.index') }}" 
+                           class="nav-link {{ request()->routeIs('cuti.index') ? 'active bg-purple' : 'text-dark' }}">
+                            <i class="bi bi-file-text me-2"></i>
                             Data Cuti
                         </a>
+                    </li>
 
-                        <a href="{{ route('cuti.create') }}" class="{{ request()->routeIs('cuti.create') ? 'bg-purple-50 text-purple-600' : 'text-gray-600 hover:bg-gray-50' }} flex items-center px-4 py-3 text-sm font-medium rounded-lg group">
-                            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                            </svg>
+                    <li class="nav-item mb-2">
+                        <a href="{{ route('cuti.create') }}" 
+                           class="nav-link {{ request()->routeIs('cuti.create') ? 'active bg-purple' : 'text-dark' }}">
+                            <i class="bi bi-file-earmark-plus me-2"></i>
                             Permohonan Cuti
                         </a>
+                    </li>
 
-                        <!-- Setelah menu Approval Cuti, tambahkan submenu dengan dropdown -->
-                        <div x-data="{ open: false }" class="space-y-1">
-                            <!-- Menu Approval dengan dropdown -->
-                            <button @click="open = !open" class="w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-600 hover:bg-gray-50 rounded-lg group">
-                                <div class="flex items-center">
-                                    <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                    </svg>
-                                    <span>Approval</span>
-                                </div>
-                                <svg class="w-4 h-4 transition-transform" :class="{ 'rotate-180': open }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                                </svg>
-                            </button>
-
-                            <!-- Submenu -->
-                            <div x-show="open" class="pl-11 space-y-1">
-                                <!-- Approval Manager (1 & 2) -->
-                                <a href="{{ route('cuti.approval.index') }}" class="{{ request()->routeIs('cuti.approval.index') ? 'bg-purple-50 text-purple-600' : 'text-gray-600 hover:bg-gray-50' }} flex items-center px-4 py-2 text-sm font-medium rounded-lg">
-                                    Approval 1 & 2
-                                </a>
-
-                                <!-- Approval HRD -->
-                                <a href="{{ route('approval.hrd') }}" class="{{ request()->routeIs('approval.hrd') ? 'bg-purple-50 text-purple-600' : 'text-gray-600 hover:bg-gray-50' }} flex items-center px-4 py-2 text-sm font-medium rounded-lg">
-                                    Approval HRD
-                                </a>
+                    <!-- Dropdown Approval -->
+                    <li class="nav-item mb-2">
+                        <button class="nav-link w-100 d-flex justify-content-between align-items-center border-0 bg-transparent {{ request()->routeIs('approval.*') ? 'active bg-purple' : 'text-dark' }}"
+                                type="button"
+                                data-bs-toggle="collapse" 
+                                data-bs-target="#approvalCollapse" 
+                                aria-expanded="true"
+                                aria-controls="approvalCollapse">
+                            <div>
+                                <i class="bi bi-check-circle me-2"></i>
+                                Approval
                             </div>
+                            <i class="bi bi-chevron-down small transition-transform"></i>
+                        </button>
+                        <div class="collapse" id="approvalCollapse">
+                            <ul class="nav flex-column ms-3 mt-2">
+                                <li class="nav-item mb-2">
+                                    <a href="{{ route('cuti.approval.index') }}" 
+                                       class="nav-link {{ request()->routeIs('cuti.approval.index') ? 'active bg-purple' : 'text-dark' }}">
+                                        <i class="bi bi-arrow-right me-2 small"></i>
+                                        Approval 1 & 2
+                                    </a>
+                                </li>
+                                <li class="nav-item mb-2">
+                                    <a href="{{ route('approval.hrd') }}" 
+                                       class="nav-link {{ request()->routeIs('approval.hrd') ? 'active bg-purple' : 'text-dark' }}">
+                                        <i class="bi bi-arrow-right me-2 small"></i>
+                                        Approval HRD
+                                    </a>
+                                </li>
+                            </ul>
                         </div>
+                    </li>
 
-                        <!-- Setelah menu Approval Cuti -->
-                        <a href="{{ route('hrd.index') }}" class="{{ request()->routeIs('hrd.index') ? 'bg-purple-50 text-purple-600' : 'text-gray-600 hover:bg-gray-50' }} flex items-center px-4 py-3 text-sm font-medium rounded-lg group">
-                            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                            </svg>
+                    <li class="nav-item mb-2">
+                        <a href="{{ route('hrd.index') }}" 
+                           class="nav-link {{ request()->routeIs('hrd.index') ? 'active bg-purple' : 'text-dark' }}">
+                            <i class="bi bi-people me-2"></i>
                             Data Karyawan
                         </a>
-                    </nav>
+                    </li>
+                </ul>
 
-                    <!-- User Info -->
-                    <div class="border-t px-4 py-4">
-                        <div class="flex items-center">
-                            <div class="flex-shrink-0">
-                                <a href="{{ route('profile') }}" class="block hover:opacity-80">
-                                    <svg class="h-8 w-8 rounded-full bg-gray-200 text-gray-600 p-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                                    </svg>
-                                </a>
-                            </div>
-                            <div class="ml-3">
-                                <a href="{{ route('profile') }}" class="block text-sm font-medium text-gray-700 hover:text-gray-900">
-                                    {{ Auth::user()->name }}
-                                </a>
-                                <form method="POST" action="{{ route('logout') }}">
-                                    @csrf
-                                    <button type="submit" class="text-xs text-gray-500 hover:text-gray-700">
-                                        Keluar
-                                    </button>
-                                </form>
-                            </div>
+                <!-- User Info -->
+                <div class="border-top p-3">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0">
+                            <a href="{{ route('profile') }}" class="text-decoration-none">
+                                <div class="rounded-circle bg-light d-flex align-items-center justify-content-center" 
+                                     style="width: 40px; height: 40px;">
+                                    <i class="bi bi-person text-secondary"></i>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="ms-3">
+                            <a href="{{ route('profile') }}" class="text-decoration-none">
+                                <h6 class="mb-0 text-dark">{{ Auth::user()->name }}</h6>
+                            </a>
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+                                <button type="submit" class="btn btn-link text-secondary p-0 small">
+                                    Keluar
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- Main Content -->
-            <div class="pl-64">
-            <!-- Page Heading -->
+            <div class="flex-grow-1" style="margin-left: 280px;">
                 @if (isset($header))
-                <header class="bg-white shadow">
-                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                <header class="bg-white shadow-sm">
+                    <div class="container-fluid py-4">
                         {{ $header }}
                     </div>
                 </header>
                 @endif
 
-            <!-- Page Content -->
-            <main>
-                {{ $slot }}
-            </main>
+                <main>
+                    {{ $slot }}
+                </main>
+            </div>
         </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        @stack('scripts')
+
+        <style>
+        .nav-pills .nav-link {
+            border-radius: 8px;
+            padding: 10px 16px;
+        }
+        .nav-pills .nav-link.active {
+            background-color: #7C3AED !important;
+        }
+        .nav-pills .nav-link:hover:not(.active) {
+            background-color: #F3F4F6;
+        }
+        .bg-purple {
+            background-color: #7C3AED !important;
+            color: white !important;
+        }
+        </style>
+
+        <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mengatur rotasi icon saat dropdown dibuka/tutup
+            const approvalButton = document.querySelector('[data-bs-target="#approvalCollapse"]');
+            const chevronIcon = approvalButton.querySelector('.bi-chevron-down');
+            
+            document.getElementById('approvalCollapse').addEventListener('show.bs.collapse', function () {
+                chevronIcon.style.transform = 'rotate(180deg)';
+            });
+            
+            document.getElementById('approvalCollapse').addEventListener('hide.bs.collapse', function () {
+                chevronIcon.style.transform = 'rotate(0)';
+            });
+            
+            // Tambahkan style untuk transisi smooth
+            const style = document.createElement('style');
+            style.textContent = `
+                .transition-transform {
+                    transition: transform 0.2s ease-in-out;
+                }
+                .nav-link:not(.active):hover {
+                    background-color: #f8f9fa;
+                }
+                .nav-link {
+                    transition: all 0.2s ease-in-out;
+                }
+            `;
+            document.head.appendChild(style);
+        });
+        </script>
     </body>
 
 </html>

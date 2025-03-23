@@ -1,104 +1,154 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex justify-between items-center">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                {{ __('Data Karyawan') }}
-            </h2>
-            <a href="{{ route('hrd.create') }}" class="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 text-sm font-medium">
+        <div class="d-flex justify-content-between align-items-center">
+            <h2 class="h4 fw-semibold mb-0">Data Karyawan</h2>
+            <a href="{{ route('hrd.create') }}" 
+               class="btn btn-primary" 
+               style="background-color: #7C3AED; border: none;">
                 Tambah Karyawan
             </a>
         </div>
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <!-- Filter Section -->
-            <div class="bg-white rounded-xl shadow-md p-6 mb-6">
-                <div class="flex flex-col md:flex-row gap-4">
-                    <div class="flex-1">
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Departemen</label>
-                        <select class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-1 focus:ring-purple-500 text-sm">
+    <div class="container-fluid py-4">
+        <!-- Filter Section -->
+        <div class="card border-0 shadow-sm mb-4" style="border-radius: 16px;">
+            <div class="card-body p-4">
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <label class="form-label small fw-medium">Departemen</label>
+                        <select class="form-select">
                             <option value="">Semua Departemen</option>
                             <option value="it">IT</option>
                             <option value="hr">HR</option>
                             <option value="finance">Finance</option>
                         </select>
                     </div>
-                    <div class="flex-1">
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Status</label>
-                        <select class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-1 focus:ring-purple-500 text-sm">
+                    <div class="col-md-4">
+                        <label class="form-label small fw-medium">Status</label>
+                        <select class="form-select">
                             <option value="">Semua Status</option>
                             <option value="active">Aktif</option>
                             <option value="inactive">Tidak Aktif</option>
                         </select>
                     </div>
-                    <div class="flex-1">
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Pencarian</label>
-                        <input type="text" placeholder="Cari nama atau badge" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-1 focus:ring-purple-500 text-sm">
-                    </div>
-                </div>
-            </div>
-
-            <!-- Table Section -->
-            <div class="bg-white overflow-hidden shadow-xl rounded-xl">
-                <div class="p-6">
-                    <table class="min-w-full divide-y divide-gray-200">
-                        <thead class="bg-gray-50">
-                            <tr>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Karyawan</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Badge ID</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Departemen</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Jabatan</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody class="bg-white divide-y divide-gray-200">
-                            <tr>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="flex items-center">
-                                        <div class="flex-shrink-0 h-10 w-10">
-                                            <div class="h-10 w-10 rounded-full bg-purple-100 flex items-center justify-center">
-                                                <span class="text-sm font-medium text-purple-600">JD</span>
-                                            </div>
-                                        </div>
-                                        <div class="ml-4">
-                                            <div class="text-sm font-medium text-gray-900">John Doe</div>
-                                            <div class="text-sm text-gray-500">john.doe@example.com</div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">B001</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">IT Department</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Software Engineer</td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                        Aktif
-                                    </span>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    <a href="{{ route('hrd.edit', 1) }}" class="text-purple-600 hover:text-purple-900 mr-3">Edit</a>
-                                    <a href="#" class="text-red-600 hover:text-red-900">Hapus</a>
-                                </td>
-                            </tr>
-                            <!-- Tambahkan baris data lainnya sesuai kebutuhan -->
-                        </tbody>
-                    </table>
-
-                    <!-- Pagination -->
-                    <div class="mt-4 flex items-center justify-between">
-                        <div class="text-sm text-gray-700">
-                            Menampilkan 1 sampai 10 dari 20 data
-                        </div>
-                        <div class="flex gap-2">
-                            <button class="px-3 py-1 border rounded-lg text-sm">Previous</button>
-                            <button class="px-3 py-1 bg-purple-50 border border-purple-500 rounded-lg text-sm">1</button>
-                            <button class="px-3 py-1 border rounded-lg text-sm">2</button>
-                            <button class="px-3 py-1 border rounded-lg text-sm">Next</button>
-                        </div>
+                    <div class="col-md-4">
+                        <label class="form-label small fw-medium">Pencarian</label>
+                        <input type="text" class="form-control" placeholder="Cari nama atau badge">
                     </div>
                 </div>
             </div>
         </div>
+
+        <!-- Table Section -->
+        <div class="card border-0 shadow-sm" style="border-radius: 16px;">
+            <div class="card-body p-4">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead>
+                            <tr>
+                                <th>Karyawan</th>
+                                <th>Badge ID</th>
+                                <th>Departemen</th>
+                                <th>Jabatan</th>
+                                <th>Status</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="rounded-circle d-flex align-items-center justify-content-center bg-purple-100 me-3" 
+                                             style="width: 40px; height: 40px;">
+                                            <span class="small fw-medium text-purple">JD</span>
+                                        </div>
+                                        <div>
+                                            <div class="fw-medium">John Doe</div>
+                                            <div class="small text-muted">john.doe@example.com</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>B001</td>
+                                <td>IT Department</td>
+                                <td>Software Engineer</td>
+                                <td>
+                                    <span class="badge bg-success">Aktif</span>
+                                </td>
+                                <td>
+                                    <a href="{{ route('hrd.edit', 1) }}" 
+                                       class="text-decoration-none me-3" 
+                                       style="color: #7C3AED;">Edit</a>
+                                    <a href="#" 
+                                       class="text-decoration-none" 
+                                       style="color: #DC2626;">Hapus</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination -->
+                <div class="d-flex justify-content-between align-items-center mt-4">
+                    <div class="small text-muted">
+                        Menampilkan 1 sampai 10 dari 20 data
+                    </div>
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination pagination-sm mb-0">
+                            <li class="page-item">
+                                <a class="page-link" href="#">Previous</a>
+                            </li>
+                            <li class="page-item active">
+                                <a class="page-link" href="#" 
+                                   style="background-color: #7C3AED; border-color: #7C3AED;">1</a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="#">2</a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="#">Next</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
     </div>
+
+    <style>
+    .form-select, .form-control {
+        border-radius: 8px;
+        border-color: #E5E7EB;
+    }
+    .form-select:focus, .form-control:focus {
+        border-color: #7C3AED;
+        box-shadow: 0 0 0 0.25rem rgba(124, 58, 237, 0.25);
+    }
+    .table > :not(caption) > * > * {
+        padding: 1rem 0.75rem;
+    }
+    .badge {
+        padding: 0.5rem 0.75rem;
+        font-weight: 500;
+        border-radius: 20px;
+    }
+    .bg-purple-100 {
+        background-color: #F3E8FF;
+    }
+    .text-purple {
+        color: #7C3AED;
+    }
+    .page-link {
+        color: #6B7280;
+        border-radius: 8px;
+        margin: 0 2px;
+    }
+    .page-link:hover {
+        color: #7C3AED;
+        background-color: #F3F4F6;
+    }
+    .page-item.active .page-link:hover {
+        color: white;
+    }
+    </style>
 </x-app-layout> 
