@@ -5,6 +5,7 @@ use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\CutiApprovalController;
 use App\Http\Controllers\CutiController;
 use App\Http\Controllers\SetupAppController;
+use App\Http\Controllers\HrdController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -41,13 +42,31 @@ Route::middleware(['auth'])->group(function () {
         return view('dashboard');
     })->name('dashboard');
 
+    Route::get('/cuti', function () {
+        return view('cuti.index');
+    })->name('cuti.index');
+
+    Route::get('/cuti/create', function () {
+        return view('cuti.create');
+    })->name('cuti.create');
+});
+
     Route::get('/profile', function () {
         return view('profile.index');
     })->name('profile');
-});
 
 Route::get('/hrd', function () {
     return view('hrd.index');
 })->name('hrd.index');
+
+Route::prefix('hrd')->group(function () {
+    Route::get('/create', function () {
+        return view('hrd.create');
+    })->name('hrd.create');
+
+    Route::get('/edit/{id}', function ($id) {
+        return view('hrd.edit');
+    })->name('hrd.edit');
+});
 
 require __DIR__ . '/auth.php';
