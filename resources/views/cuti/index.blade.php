@@ -1,56 +1,103 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-2xl text-gray-800 leading-tight">
-            {{ __('Data Cuti') }}
-        </h2>
+        <div class="d-flex justify-content-between align-items-center">
+            <h2 class="h4 fw-semibold mb-0">Data Cuti Karyawan</h2>
+        </div>
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <!-- Tabel Data -->
-            <div class="bg-white overflow-hidden shadow-sm rounded-xl">
-                <div class="p-6">
-                    <table class="min-w-full divide-y divide-gray-200">
+    <div class="container-fluid py-4">
+        <div class="card border-0 shadow-sm" style="border-radius: 16px;">
+            <div class="card-body p-4">
+                <!-- Tabel Data -->
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
                         <thead>
                             <tr>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">No. Registrasi</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tanggal Pengajuan</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Jenis Cuti</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Periode Cuti</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Durasi</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                <th>No. Registrasi</th>
+                                <th>Tanggal Pengajuan</th>
+                                <th>Jenis Cuti</th>
+                                <th>Periode Cuti</th>
+                                <th>Durasi</th>
+                                <th>Status</th>
                             </tr>
                         </thead>
-                        <tbody class="bg-white divide-y divide-gray-200">
+                        <tbody>
                             <tr>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">REG/2024/001</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">20 Mar 2024</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Cuti Tahunan</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">22 Mar 2024 - 24 Mar 2024</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">3 Hari</td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                                <td>REG/2024/001</td>
+                                <td>20 Mar 2024</td>
+                                <td>Cuti Tahunan</td>
+                                <td>22 Mar 2024 - 24 Mar 2024</td>
+                                <td>3 Hari</td>
+                                <td>
+                                    <span class="badge" style="background-color: #FCD34D; color: #92400E;">
                                         Menunggu Persetujuan
                                     </span>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
+                </div>
 
-                    <!-- Pagination -->
-                    <div class="mt-4 flex items-center justify-between">
-                        <div class="text-sm text-gray-700">
-                            Showing 1 to 10 of 20 results
-                        </div>
-                        <div class="flex gap-2">
-                            <button class="px-3 py-1 border rounded-lg text-sm">Previous</button>
-                            <button class="px-3 py-1 bg-purple-50 border border-purple-500 rounded-lg text-sm">1</button>
-                            <button class="px-3 py-1 border rounded-lg text-sm">2</button>
-                            <button class="px-3 py-1 border rounded-lg text-sm">Next</button>
-                        </div>
+                <!-- Pagination -->
+                <div class="d-flex justify-content-between align-items-center mt-4">
+                    <div class="small text-muted">
+                        Showing 1 to 10 of 20 results
                     </div>
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination pagination-sm mb-0">
+                            <li class="page-item">
+                                <a class="page-link" href="#" aria-label="Previous">
+                                    <span aria-hidden="true">Previous</span>
+                                </a>
+                            </li>
+                            <li class="page-item active">
+                                <a class="page-link" href="#" style="background-color: #7C3AED; border-color: #7C3AED;">1</a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="#">2</a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="#" aria-label="Next">
+                                    <span aria-hidden="true">Next</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
                 </div>
             </div>
         </div>
     </div>
+
+    <style>
+    .table > :not(caption) > * > * {
+        padding: 1rem 0.75rem;
+    }
+    .table tbody tr:hover {
+        background-color: #F9FAFB;
+    }
+    .badge {
+        padding: 0.5rem 0.75rem;
+        font-weight: 500;
+        border-radius: 20px;
+    }
+    .page-link {
+        color: #6B7280;
+        border-radius: 8px;
+        margin: 0 2px;
+    }
+    .page-link:hover {
+        color: #7C3AED;
+        background-color: #F3F4F6;
+    }
+    .page-item.active .page-link:hover {
+        color: white;
+    }
+    .table thead th {
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: #6B7280;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+    </style>
 </x-app-layout> 
