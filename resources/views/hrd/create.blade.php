@@ -7,133 +7,63 @@
     </x-slot>
 
     <div class="container-fluid py-4">
-        <div class="card border-0 shadow-sm" style="border-radius: 16px;">
+        <div class="card border-0 shadow-sm rounded-3">
             <div class="card-body">
-                <form action="" method="POST">
+                <form method="POST" action="{{ route('hrd.store') }}" class="space-y-6">
                     @csrf
-                    <!-- Informasi Pribadi -->
-                    <div class="mb-4">
-                        <h5 class="fw-medium mb-4">Informasi Pribadi</h5>
-                        <div class="row g-4">
-                            <div class="col-md-6">
-                                <label class="form-label small fw-medium">Nama Lengkap</label>
-                                <input type="text" name="name" class="form-control" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label small fw-medium">Email</label>
-                                <input type="email" name="email" class="form-control" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label small fw-medium">Badge ID</label>
-                                <input type="text" name="badge_id" class="form-control" required>
-                            </div>
-                            {{-- <div class="col-md-6">
-                                <label class="form-label small fw-medium">Nomor Telepon</label>
-                                <input type="tel" name="phone" class="form-control">
-                            </div> --}}
-                        </div>
+
+                    <!-- Name -->
+                    <div class="mb-3">
+                        <x-input-label for="name" :value="__('Nama Lengkap')" class="form-label" />
+                        <x-text-input id="name" class="form-control" type="text" name="name"
+                            :value="old('name')" required autofocus autocomplete="name"
+                            placeholder="Masukkan nama lengkap" />
+                        <x-input-error :messages="$errors->get('name')" class="mt-2" />
                     </div>
 
-                    <!-- Informasi Pekerjaan -->
-                    <div class="mb-4">
-                        <h5 class="fw-medium mb-4">Informasi Pekerjaan</h5>
-                        <div class="row g-4">
-                            <div class="col-md-6">
-                                <label class="form-label small fw-medium">Departemen</label>
-                                <select name="department" class="form-select" required>
-                                    <option value="">Pilih Departemen</option>
-                                    <option value="IT">IT</option>
-                                    <option value="HR">HR</option>
-                                    <option value="Finance">Finance</option>
-                                    <option value="Marketing">Marketing</option>
-                                </select>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label small fw-medium">Jabatan</label>
-                                <input type="text" name="position" class="form-control" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label small fw-medium">Tanggal Bergabung</label>
-                                <input type="date" name="join_date" class="form-control" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label small fw-medium">Status Karyawan</label>
-                                <select name="employment_status" class="form-select" required>
-                                    <option value="">Pilih Status</option>
-                                    <option value="permanent">Karyawan Tetap</option>
-                                    <option value="contract">Karyawan Kontrak</option>
-                                    <option value="probation">Masa Percobaan</option>
-                                </select>
-                            </div>
-                        </div>
+                    <!-- Email Address -->
+                    <div class="mb-3">
+                        <x-input-label for="email" :value="__('Email')" class="form-label" />
+                        <x-text-input id="email" class="form-control" type="email" name="email"
+                            :value="old('email')" required autocomplete="username" placeholder="nama@email.com" />
+                        <x-input-error :messages="$errors->get('email')" class="mt-2" />
                     </div>
 
-                    <!-- Pengaturan Approval -->
-                    <div class="mb-4">
-                        <h5 class="fw-medium mb-4">Pengaturan Approval</h5>
-                        <div class="row g-4">
-                            <div class="col-md-6">
-                                <label class="form-label small fw-medium">Approval 1</label>
-                                <select name="approval_1" class="form-select" required>
-                                    <option value="">Pilih Approval 1</option>
-                                    <option value="supervisor_1">Supervisor 1</option>
-                                    <option value="manager_1">Manager 1</option>
-                                </select>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label small fw-medium">Approval 2</label>
-                                <select name="approval_2" class="form-select" required>
-                                    <option value="">Pilih Approval 2</option>
-                                    <option value="manager_1">Manager 1</option>
-                                    <option value="director_1">Director 1</option>
-                                </select>
-                            </div>
-                        </div>
+                    <!-- Role -->
+                    <div class="mb-3">
+                        <x-input-label for="role" :value="__('Role')" class="form-label" />
+                        <select name="role" id="role" class="form-select">
+                            <option value="user">User</option>
+                            <option value="Approval">Approval</option>
+                            <option value="hrd">HRD</option>
+                        </select>
+                        <x-input-error :messages="$errors->get('role')" class="mt-2" />
                     </div>
 
                     <!-- Password -->
-                    <div class="mb-4">
-                        <h5 class="fw-medium mb-4">Password Akun</h5>
-                        <div class="row g-4">
-                            <div class="col-md-6">
-                                <label class="form-label small fw-medium">Password</label>
-                                <input type="password" name="password" class="form-control" required>
-                                <div class="form-text">Minimal 8 karakter</div>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label small fw-medium">Konfirmasi Password</label>
-                                <input type="password" name="password_confirmation" class="form-control" required>
-                            </div>
-                        </div>
+                    <div class="mb-3">
+                        <x-input-label for="password" :value="__('Password')" class="form-label" />
+                        <x-text-input id="password" class="form-control" type="password" name="password" required
+                            autocomplete="new-password" placeholder="Minimal 8 karakter" />
+                        <x-input-error :messages="$errors->get('password')" class="mt-2" />
                     </div>
 
-                    <!-- Tombol Submit -->
-                    <div class="d-flex justify-content-end">
-                        <button type="submit" class="btn btn-primary px-4" style="background-color: #7C3AED; border: none;">
-                            Tambah Karyawan
+                    <!-- Confirm Password -->
+                    <div class="mb-3">
+                        <x-input-label for="password_confirmation" :value="__('Konfirmasi Password')" class="form-label" />
+                        <x-text-input id="password_confirmation" class="form-control" type="password"
+                            name="password_confirmation" required autocomplete="new-password"
+                            placeholder="Ulangi password" />
+                        <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
+                    </div>
+
+                    <div>
+                        <button type="submit" class="btn btn-primary w-100">
+                            {{ __('Tambah User') }}
                         </button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
-
-    <style>
-    .form-control, .form-select {
-        border-radius: 8px;
-        padding: 0.6rem 0.75rem;
-        border-color: #E5E7EB;
-    }
-    .form-control:focus, .form-select:focus {
-        border-color: #7C3AED;
-        box-shadow: 0 0 0 0.25rem rgba(124, 58, 237, 0.25);
-    }
-    .btn-light {
-        background-color: #F3F4F6;
-        border-color: #E5E7EB;
-    }
-    .btn-light:hover {
-        background-color: #E5E7EB;
-    }
-    </style>
-</x-app-layout> 
+</x-app-layout>

@@ -7,129 +7,55 @@
     </x-slot>
 
     <div class="container-fluid py-4">
-        <div class="card border-0 shadow-sm" style="border-radius: 16px;">
-            <form action="" method="POST">
-                @csrf
-                @method('PUT')
-                
-                <!-- Informasi Pribadi -->
-                <div class="card-body border-bottom">
-                    <h5 class="fw-medium text-purple mb-4 bg-purple-soft p-3 rounded-3">
-                        Informasi Pribadi
-                    </h5>
-                    <div class="row g-4">
-                        <div class="col-md-6">
-                            <label class="form-label small fw-medium">Nama Lengkap</label>
-                            <input type="text" name="name" class="form-control" value="">
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label small fw-medium">Email</label>
-                            <input type="email" name="email" class="form-control" value="">
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label small fw-medium">Badge ID</label>
-                            <input type="text" name="badge_id" class="form-control" value="">
-                        </div>
-                            {{-- <div class="col-md-6">
-                                <label class="form-label small fw-medium">Nomor Telepon</label>
-                                <input type="tel" name="phone" class="form-control" value="">
-                            </div> --}}
-                    </div>
-                </div>
+        <div class="card border-0 shadow-sm rounded-3">
+            <div class="card-body">
+                <form method="POST" action="{{ route('hrd.update', $employee->id) }}" class="space-y-6">
+                    @csrf
+                    @method('PUT')
 
-                <!-- Informasi Pekerjaan -->
-                <div class="card-body border-bottom">
-                    <h5 class="fw-medium text-purple mb-4 bg-purple-soft p-3 rounded-3">
-                        Informasi Pekerjaan
-                    </h5>
-                    <div class="row g-4">
-                        <div class="col-md-6">
-                            <label class="form-label small fw-medium">Departemen</label>
-                            <select name="department" class="form-select">
-                                <option value="">Pilih Departemen</option>
-                                <option value="IT">IT</option>
-                                <option value="HR">HR</option>
-                                <option value="Finance">Finance</option>
-                                <option value="Marketing">Marketing</option>
-                            </select>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label small fw-medium">Jabatan</label>
-                            <input type="text" name="position" class="form-control" value="">
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label small fw-medium">Tanggal Bergabung</label>
-                            <input type="date" name="join_date" class="form-control" value="">
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label small fw-medium">Status Karyawan</label>
-                            <select name="employment_status" class="form-select">
-                                <option value="">Pilih Status</option>
-                                <option value="permanent">Karyawan Tetap</option>
-                                <option value="contract">Karyawan Kontrak</option>
-                                <option value="probation">Masa Percobaan</option>
-                            </select>
-                        </div>
+                    <!-- Name -->
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Nama Lengkap</label>
+                        <input id="name" class="form-control" type="text" name="name"
+                            value="{{ old('name', $employee->name) }}" required autofocus autocomplete="name"
+                            placeholder="Masukkan nama lengkap">
+                        @error('name')
+                            <div class="text-danger mt-2">{{ $message }}</div>
+                        @enderror
                     </div>
-                </div>
 
-                <!-- Pengaturan Approval -->
-                <div class="card-body border-bottom">
-                    <h5 class="fw-medium text-purple mb-4 bg-purple-soft p-3 rounded-3">
-                        Pengaturan Approval
-                    </h5>
-                    <div class="row g-4">
-                        <div class="col-md-6">
-                            <label class="form-label small fw-medium">Approval 1</label>
-                            <select name="approval_1" class="form-select">
-                                <option value="">Pilih Approval 1</option>
-                                <option value="supervisor_1">Supervisor 1</option>
-                                <option value="manager_1">Manager 1</option>
-                            </select>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label small fw-medium">Approval 2</label>
-                            <select name="approval_2" class="form-select">
-                                <option value="">Pilih Approval 2</option>
-                                <option value="manager_1">Manager 1</option>
-                                <option value="director_1">Director 1</option>
-                            </select>
-                        </div>
+                    <!-- Email Address -->
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input id="email" class="form-control" type="email" name="email"
+                            value="{{ old('email', $employee->email) }}" required autocomplete="username"
+                            placeholder="nama@email.com">
+                        @error('email')
+                            <div class="text-danger mt-2">{{ $message }}</div>
+                        @enderror
                     </div>
-                </div>
 
-                <!-- Tombol Submit -->
-                <div class="card-body d-flex justify-content-end">
-                    <button type="submit" class="btn btn-primary px-4" style="background-color: #7C3AED; border: none;">
-                        Simpan Perubahan
-                    </button>
-                </div>
-            </form>
+                    <!-- Role -->
+                    <div class="mb-3">
+                        <label for="role" class="form-label">Role</label>
+                        <select name="role" id="role" class="form-select">
+                            <option value="user" {{ $employee->role == 'user' ? 'selected' : '' }}>User</option>
+                            <option value="Approval" {{ $employee->role == 'Approval' ? 'selected' : '' }}>Approval
+                            </option>
+                            <option value="hrd" {{ $employee->role == 'hrd' ? 'selected' : '' }}>HRD</option>
+                        </select>
+                        @error('role')
+                            <div class="text-danger mt-2">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div>
+                        <button type="submit" class="btn btn-primary w-100">
+                            Simpan Perubahan
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
-
-    <style>
-    .form-control, .form-select {
-        border-radius: 8px;
-        padding: 0.6rem 0.75rem;
-        border-color: #E5E7EB;
-    }
-    .form-control:focus, .form-select:focus {
-        border-color: #7C3AED;
-        box-shadow: 0 0 0 0.25rem rgba(124, 58, 237, 0.25);
-    }
-    .bg-purple-soft {
-        background-color: #F3E8FF;
-    }
-    .text-purple {
-        color: #7C3AED;
-    }
-    .btn-light {
-        background-color: #F3F4F6;
-        border-color: #E5E7EB;
-    }
-    .btn-light:hover {
-        background-color: #E5E7EB;
-    }
-    </style>
-</x-app-layout> 
+</x-app-layout>

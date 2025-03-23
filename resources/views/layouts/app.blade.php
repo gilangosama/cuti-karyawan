@@ -72,7 +72,7 @@
                             <ul class="nav flex-column ms-3 mt-2">
                                 <li class="nav-item mb-2">
                                     <a href="{{ route('cuti.approval.index') }}" 
-                                       class="nav-link {{ request()->routeIs('cuti.approval.index') ? 'active bg-purple' : 'text-dark' }}">
+                                       class="nav-link {{ request()->routeIs('approval.index') ? 'active bg-purple' : 'text-dark' }}">
                                         <i class="bi bi-arrow-right me-2 small"></i>
                                         Approval 1 & 2
                                     </a>
@@ -101,7 +101,7 @@
                 <div class="border-top p-3">
                     <div class="d-flex align-items-center">
                         <div class="flex-shrink-0">
-                            <a href="{{ route('profile') }}" class="text-decoration-none">
+                            <a href="{{ route('profile.edit') }}" class="text-decoration-none">
                                 <div class="rounded-circle bg-light d-flex align-items-center justify-content-center" 
                                      style="width: 40px; height: 40px;">
                                     <i class="bi bi-person text-secondary"></i>
@@ -109,7 +109,7 @@
                             </a>
                         </div>
                         <div class="ms-3">
-                            <a href="{{ route('profile') }}" class="text-decoration-none">
+                            <a href="{{ route('profile.edit') }}" class="text-decoration-none">
                                 <h6 class="mb-0 text-dark">{{ Auth::user()->name }}</h6>
                             </a>
                             <form method="POST" action="{{ route('logout') }}">
