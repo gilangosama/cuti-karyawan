@@ -42,10 +42,6 @@ Route::middleware(['auth'])->group(function () {
         return view('dashboard');
     })->name('dashboard');
 
-    Route::get('/cuti', function () {
-        return view('cuti.index');
-    })->name('cuti.index');
-
     // Route::get('/cuti/create', function () {
     //     return view('cuti.create');
     // })->name('cuti.create');

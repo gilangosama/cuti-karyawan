@@ -17,6 +17,7 @@ return new class extends Migration
             $table->enum('jenis', ['tahunan', 'sakit', 'lahiran'])->default('tahunan');
             $table->date('start');
             $table->date('end');
+            $table->integer('total_hari')->nullable();
             $table->string('alamat')->nullable();
             $table->string('foto')->nullable();
             $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');

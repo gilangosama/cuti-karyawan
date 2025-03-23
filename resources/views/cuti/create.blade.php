@@ -121,9 +121,12 @@
                                 <div class="flex items-center">
                                     <label class="text-sm font-medium text-gray-700 w-32">Leave Period</label>
                                     <span class="text-gray-600 mx-2">:</span>
-                                    <input type="text" value="2024/2025"
+                                    <input type="text" value="2024/2025" name="leave_period"
                                         class="flex-1 px-4 py-2 border border-gray-300 rounded-lg bg-gray-50 text-sm"
                                         readonly>
+                                        @error('leave_period')
+                                            <span class="text-red-500">{{ $message }}</span>
+                                        @enderror
                                 </div>
                                 <div class="flex items-center">
                                     <label class="text-sm font-medium text-gray-700">Total Leave day(s)</label>
@@ -131,6 +134,9 @@
                                     <input type="number" name="total_days"
                                         class="w-32 px-4 py-2 border border-gray-300 rounded-lg focus:ring-1 focus:ring-purple-500 text-sm">
                                     <span class="text-sm text-gray-600 ml-4">Work/Calendar Days</span>
+                                    @error('total_days')
+                                        <span class="text-red-500">{{ $message }}</span>
+                                    @enderror
                                 </div>
                             </div>
 
@@ -148,11 +154,17 @@
                                     <input type="date" name="start" placeholder="mm/dd/yyyy"
                                         id="start"
                                         class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-1 focus:ring-purple-500 text-sm">
+                                        @error('start')
+                                            <span class="text-red-500">{{ $message }}</span>
+                                        @enderror
                                 </div>
                                 <div class="flex items-center flex-1">
                                     <label class="text-sm font-medium text-gray-700 w-12">until</label>
                                     <input type="date" name="end" placeholder="mm/dd/yyyy" id="end"
                                         class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-1 focus:ring-purple-500 text-sm">
+                                        @error('end')
+                                            <span class="text-red-500">{{ $message }}</span>
+                                        @enderror
                                 </div>
                             </div>
 
@@ -162,6 +174,9 @@
                                 <span class="text-gray-600 mx-2">:</span>
                                 <input type="text" name="holiday" placeholder="e.g., 09-10 November 2024"
                                     class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-1 focus:ring-purple-500 text-sm">
+                                    @error('holiday')
+                                        <span class="text-red-500">{{ $message }}</span>
+                                    @enderror
                             </div>
 
                             <!-- Address -->
@@ -172,6 +187,9 @@
                                     <textarea name="address" rows="3"
                                         class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-1 focus:ring-purple-500 text-sm"
                                         placeholder="Please fill out this field."></textarea>
+                                        @error('address')
+                                            <span class="text-red-500">{{ $message }}</span>
+                                        @enderror
                                 </div>
                             </div>
 
@@ -185,7 +203,7 @@
                                     @endforeach
                                 </select>
                                 <label for="approval_2">Approval 2</label>
-                                <select name="approval_1" id="approval_2">
+                                <select name="approval_2" id="approval_2">
                                     @foreach ($approvals as $approval)
                                         <option value="{{ $approval->id }}">{{ $approval->name }} -
                                             {{ $approval->profil->position }}</option>
@@ -220,7 +238,11 @@
                                         <p class="mt-1 text-sm text-gray-500">Upload surat keterangan dokter
                                             (PDF/JPG/PNG)</p>
                                     </div>
+                                    @error('doctor_letter')
+                                        <span class="text-red-500">{{ $message }}</span>
+                                    @enderror
                                 </div>
+
                                 <div class="items-start" id="suratKeteranganField">
                                     <label class="text-sm font-medium text-gray-700 w-32">Surat Keterangan</label>
                                     <span class="text-gray-600 mx-2">:</span>
@@ -235,6 +257,9 @@
                                         <p class="mt-1 text-sm text-gray-500">Upload surat keterangan dokter/bidan
                                             (PDF/JPG/PNG)</p>
                                     </div>
+                                    @error('supporting_letter')
+                                        <span class="text-red-500">{{ $message }}</span>
+                                    @enderror
                                 </div>
                             </div>
 

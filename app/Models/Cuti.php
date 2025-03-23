@@ -9,7 +9,7 @@ class Cuti extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'jenis', 'start', 'end', 'alamat', 'foto', 'description', 'status'];
+    protected $fillable = ['user_id', 'jenis', 'start', 'end', 'total_hari', 'alamat', 'foto', 'description', 'status'];
 
     public function user()
     {
