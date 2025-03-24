@@ -7,8 +7,15 @@
 
     <div class="container-fluid py-4">
         <!-- Filter Section -->
-        <div class="card border-0 shadow-sm mb-4" style="border-radius: 16px;">
-            <div class="card-body p-4">
+        <div class="card border-0 shadow-sm rounded-3 mb-4">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h5 class="fw-semibold mb-0">Filter Data</h5>
+                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exportModal">
+                        <i class="bi bi-file-excel me-2"></i>Export Excel
+                    </button>
+                </div>
+
                 <div class="row g-3">
                     <div class="col-md-4">
                         <label class="form-label small fw-medium">Status</label>
@@ -107,6 +114,48 @@
                         </tbody>
                     </table>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Export -->
+    <div class="modal fade" id="exportModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Export Data Cuti</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form action="{{ route('cuti.export') }}" method="GET">
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label class="form-label">Periode</label>
+                            <div class="row g-2">
+                                <div class="col">
+                                    <input type="date" name="start_date" class="form-control" placeholder="Tanggal Mulai">
+                                </div>
+                                <div class="col">
+                                    <input type="date" name="end_date" class="form-control" placeholder="Tanggal Selesai">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Status</label>
+                            <select name="status" class="form-select">
+                                <option value="">Semua Status</option>
+                                <option value="pending">Pending</option>
+                                <option value="approved">Approved</option>
+                                <option value="rejected">Rejected</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                        <button type="submit" class="btn btn-success">
+                            <i class="bi bi-file-excel me-2"></i>Export
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

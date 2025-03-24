@@ -13,16 +13,15 @@ return new class extends Migration
     {
         Schema::create('profils', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->integer('no_badge')->nullable();
             $table->string('section')->nullable();
             $table->string('position')->nullable();
+            $table->string('department')->nullable();
             $table->date('join_date')->nullable();
             $table->string('jenis')->nullable();
             $table->integer('kouta')->default(12);
             $table->timestamps();
-
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

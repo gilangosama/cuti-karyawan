@@ -76,7 +76,9 @@
         </div>
 
         <!-- Form Surat Cuti -->
-        <div id="formCuti" class="d-none">
+        <div id="formCuti" class="d-none"  action="{{ route('cuti.store') }}" id="cutiForm"
+            data-hmin="{{ $hMinCuti }}" enctype="multipart/form-data" method="POST">
+            @csrf
             <div class="card border-0 shadow-sm rounded-3">
                 <div class="card-body p-4">
                     <!-- Header Surat -->
@@ -112,11 +114,11 @@
                         <div class="row mb-4">
                             <div class="col-md-6">
                                 <label class="form-label">On the date</label>
-                                <input type="date" name="start" id="start" class="form-control">
+                                <input type="date" name="start_date" id="start_date" class="form-control" required>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">until</label>
-                                <input type="date" name="end" id="end" class="form-control">
+                                <input type="date" name="end_date" id="end" class="form-control" required>
                             </div>
                         </div>
 
@@ -130,26 +132,26 @@
                         <!-- Address -->
                         <div class="mb-4">
                             <label class="form-label">Address on leave</label>
-                            <textarea name="address" rows="3" class="form-control" placeholder="Please fill out this field."></textarea>
+                            <textarea name="address" rows="3" class="form-control" placeholder="Please fill out this field." required></textarea>
                         </div>
 
                         <!-- Approval -->
                         <div class="row mb-4">
                             <div class="col-md-6">
                                 <label class="form-label">Approval 1</label>
-                                <select name="approval_1" id="approval_1" class="form-select">
-                                    @foreach ($approvals as $approval)
-                                        <option value="{{ $approval->id }}">{{ $approval->name }} -
-                                            {{ $approval->profil->position }}</option>
+                                <select name="approval_1" class="form-select" required>
+                                    <option value="">Pilih Approval 1</option>
+                                    @foreach($approvers as $approver)
+                                        <option value="{{ $approver->id }}">{{ $approver->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Approval 2</label>
-                                <select name="approval_2" id="approval_2" class="form-select">
-                                    @foreach ($approvals as $approval)
-                                        <option value="{{ $approval->id }}">{{ $approval->name }} -
-                                            {{ $approval->profil->position }}</option>
+                                <select name="approval_2" class="form-select" required>
+                                    <option value="">Pilih Approval 2</option>
+                                    @foreach($approvers as $approver)
+                                        <option value="{{ $approver->id }}">{{ $approver->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -159,9 +161,10 @@
                         <div class="row mb-4">
                             <div class="col-md-6">
                                 <label class="form-label">HRD Approval</label>
-                                <select name="hrd_approval" id="hrd_approval" class="form-select">
-                                    @foreach ($hrds as $hrd)
-                                        <option value="{{ $hrd->id }}">{{ $hrd->name }} - {{ $hrd->profil->position }}</option>
+                                <select name="hrd_approval" class="form-select" required>
+                                    <option value="">Pilih HRD</option>
+                                    @foreach($hrds as $hrd)
+                                        <option value="{{ $hrd->id }}">{{ $hrd->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -169,14 +172,14 @@
 
                         <!-- File Uploads -->
                         <div id="fileUploadFields" class="mb-4">
-                            <div class="mb-3" id="suratDokterField">
+                            <div id="suratDokterField" class="mb-3 d-none">
                                 <label class="form-label">Surat Dokter</label>
                                 <input type="file" name="doctor_letter" class="form-control">
                                 <small class="form-text text-muted">Upload surat keterangan dokter
                                     (PDF/JPG/PNG)</small>
                             </div>
-                            <div class="mb-3" id="suratKeteranganField">
-                                <label class="form-label">Surat Keterangan</label>
+                            <div id="suratPendukungField" class="mb-3 d-none">
+                                <label class="form-label">Surat Pendukung</label>
                                 <input type="file" name="supporting_letter" class="form-control">
                                 <small class="form-text text-muted">Upload surat keterangan dokter/bidan
                                     (PDF/JPG/PNG)</small>
@@ -235,7 +238,8 @@
         function showForm() {
             const selectedCuti = document.querySelector('input[name="jenis_cuti"]:checked');
             const formCuti = document.getElementById('formCuti');
-            let hminCuti = document.getElementById("cutiForm").dataset.hmin || 17;
+            const suratDokterField = document.getElementById('suratDokterField');
+            const suratPendukungField = document.getElementById('suratPendukungField');
 
             if (!selectedCuti) {
                 alert('Silakan pilih jenis cuti terlebih dahulu');
@@ -245,17 +249,33 @@
             // Tampilkan form
             formCuti.classList.remove('d-none');
 
+            // Reset semua field file
+            suratDokterField.classList.add('d-none');
+            suratPendukungField.classList.add('d-none');
+
+            // Tampilkan field sesuai jenis cuti
+            switch (selectedCuti.value) {
+                case 'sakit':
+                    suratDokterField.classList.remove('d-none');
+                    document.getElementById('selectedJenisCuti').value = 'sakit';
+                    break;
+                case 'melahirkan':
+                    suratPendukungField.classList.remove('d-none');
+                    document.getElementById('selectedJenisCuti').value = 'melahirkan';
+                    break;
+            }
+
             // Update judul form sesuai jenis cuti
             const jenisTitle = document.getElementById('jenisCutiTitle');
             switch (selectedCuti.value) {
                 case 'tahunan':
                     jenisTitle.textContent = 'ANNUAL LEAVE FORM';
-                    document.getElementById('suratKeteranganField').classList.add('d-none');
+                    document.getElementById('suratPendukungField').classList.add('d-none');
                     document.getElementById('suratDokterField').classList.add('d-none');
                     document.getElementById('selectedJenisCuti').value = 'tahunan';
 
-                    let start = document.getElementById("start");
-                    let end = document.getElementById("end");
+                    let start = document.getElementById("start_date");
+                    let end = document.getElementById("end_date");
 
                     let today = new Date();
                     let minDate = new Date();
@@ -270,22 +290,22 @@
                 case 'sakit':
                     jenisTitle.textContent = 'SICK LEAVE FORM';
                     document.getElementById('suratDokterField').classList.remove('d-none');
-                    document.getElementById('suratKeteranganField').classList.add('d-none');
+                    document.getElementById('suratPendukungField').classList.add('d-none');
                     document.getElementById('selectedJenisCuti').value = 'sakit';
 
                     // Hapus aturan batasan tanggal
-                    document.getElementById("start").removeAttribute("min");
-                    document.getElementById("end").removeAttribute("min");
+                    document.getElementById("start_date").removeAttribute("min");
+                    document.getElementById("end_date").removeAttribute("min");
                     break;
                 case 'melahirkan':
                     jenisTitle.textContent = 'MATERNITY LEAVE FORM';
-                    document.getElementById('suratKeteranganField').classList.remove('d-none');
+                    document.getElementById('suratPendukungField').classList.remove('d-none');
                     document.getElementById('suratDokterField').classList.add('d-none');
                     document.getElementById('selectedJenisCuti').value = 'melahirkan';
 
                     // Hapus aturan batasan tanggal
-                    document.getElementById("start").removeAttribute("min");
-                    document.getElementById("end").removeAttribute("min");
+                    document.getElementById("start_date").removeAttribute("min");
+                    document.getElementById("end_date").removeAttribute("min");
                     break;
             }
 
@@ -323,7 +343,7 @@
 
             // Reset semua field tambahan
             document.getElementById('suratDokterField').classList.add('d-none');
-            document.getElementById('suratKeteranganField').classList.add('d-none');
+            document.getElementById('suratPendukungField').classList.add('d-none');
             document.getElementById('alasanPentingField').classList.add('d-none');
 
             // Scroll ke pilihan jenis cuti
@@ -331,6 +351,27 @@
                 behavior: 'smooth'
             });
         }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const radioButtons = document.querySelectorAll('input[name="jenis_cuti"]');
+            const suratDokterField = document.getElementById('suratDokterField');
+            const suratPendukungField = document.getElementById('suratPendukungField');
+
+            radioButtons.forEach(radio => {
+                radio.addEventListener('change', function() {
+                    // Sembunyikan semua field upload
+                    suratDokterField.classList.add('d-none');
+                    suratPendukungField.classList.add('d-none');
+
+                    // Tampilkan field sesuai jenis cuti yang dipilih
+                    if (this.value === 'sakit') {
+                        suratDokterField.classList.remove('d-none');
+                    } else if (this.value === 'melahirkan') {
+                        suratPendukungField.classList.remove('d-none');
+                    }
+                });
+            });
+        });
     </script>
 
 </x-app-layout>

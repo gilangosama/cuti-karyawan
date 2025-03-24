@@ -14,17 +14,24 @@ return new class extends Migration
         Schema::create('cutis', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->enum('jenis', ['tahunan', 'sakit', 'lahiran'])->default('tahunan');
-            $table->date('start');
-            $table->date('end');
-            $table->integer('total_hari')->nullable();
-            $table->string('alamat')->nullable();
-            $table->string('foto')->nullable();
+            $table->string('no_registrasi');
+            $table->enum('jenis_cuti', ['tahunan', 'sakit', 'melahirkan']);
+            $table->date('start_date');
+            $table->date('end_date');
+            $table->integer('total_days');
+            $table->string('address');
+            $table->string('doctor_letter')->nullable();
+            $table->string('supporting_letter')->nullable();
             $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
-            $table->string('description')->nullable();
+            $table->unsignedBigInteger('approval1_id')->nullable();
+            $table->unsignedBigInteger('approval2_id')->nullable();
+            $table->unsignedBigInteger('hrd_id')->nullable();
             $table->timestamps();
 
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('approval1_id')->references('id')->on('users');
+            $table->foreign('approval2_id')->references('id')->on('users');
+            $table->foreign('hrd_id')->references('id')->on('users');
         });
     }
 

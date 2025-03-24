@@ -1,110 +1,94 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="d-flex justify-content-between align-items-center">
-            <h2 class="h4 fw-semibold mb-0">Approval HRD - Surat Cuti</h2>
-        </div>
+        <h2 class="h4 font-weight-bold">
+            {{ __('Approval HRD') }}
+        </h2>
     </x-slot>
 
     <div class="container-fluid py-4">
-        <!-- Filter Section -->
-        <div class="card border-0 shadow-sm mb-4" style="border-radius: 16px;">
-            <div class="card-body p-4">
-                <div class="row g-3">
-                    <div class="col-md-4">
-                        <label class="form-label small fw-medium">Status</label>
-                        <select class="form-select">
-                            <option value="">Semua Status</option>
-                            <option value="pending">Menunggu</option>
-                            <option value="approved">Disetujui</option>
-                            <option value="rejected">Ditolak</option>
-                        </select>
-                    </div>
-                    <div class="col-md-4">
-                        <label class="form-label small fw-medium">Jenis Cuti</label>
-                        <select class="form-select">
-                            <option value="">Semua Jenis</option>
-                            <option value="annual">Cuti Tahunan</option>
-                            <option value="sick">Cuti Sakit</option>
-                            <option value="important">Cuti Penting</option>
-                        </select>
-                    </div>
-                    <div class="col-md-4">
-                        <label class="form-label small fw-medium">Pencarian</label>
-                        <input type="text" class="form-control" placeholder="Cari nama karyawan">
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Table Section -->
-        <div class="card border-0 shadow-sm" style="border-radius: 16px;">
+        <div class="card border-0 shadow-sm">
             <div class="card-body p-4">
                 <div class="table-responsive">
-                    <table class="table table-hover align-middle">
+                    <table class="table table-hover">
                         <thead>
                             <tr>
-                                <th>Nama Karyawan</th>
+                                <th>No. Registrasi</th>
+                                <th>Nama</th>
+                                <th>Tanggal Pengajuan</th>
                                 <th>Jenis Cuti</th>
-                                <th>Tanggal Cuti</th>
-                                <th>Durasi</th>
+                                <th>Periode</th>
                                 <th>Status</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>
-                                    <div class="d-flex align-items-center">
-                                        <div class="rounded-circle d-flex align-items-center justify-content-center bg-purple-100 me-3" 
-                                             style="width: 40px; height: 40px;">
-                                            <span class="small fw-medium text-purple">JD</span>
-                                        </div>
-                                        <div>
-                                            <div class="fw-medium">John Doe</div>
-                                            <div class="small text-muted">IT Department</div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>Cuti Tahunan</td>
-                                <td>20/03/2024 - 22/03/2024</td>
-                                <td>3 Hari</td>
-                                <td>
-                                    <span class="badge" style="background-color: #FCD34D; color: #92400E;">
-                                        Pending
-                                    </span>
-                                </td>
-                                <td>
-                                    <a href="{{ route('cuti.approval.detail', 1) }}" 
-                                       class="text-decoration-none" 
-                                       style="color: #7C3AED;">Detail</a>
-                                </td>
-                            </tr>
+                            @forelse($cutiList as $cuti)
+                                <tr>
+                                    <td>{{ $cuti->no_registrasi }}</td>
+                                    <td>{{ $cuti->user->name }}</td>
+                                    <td>{{ $cuti->created_at->format('d/m/Y') }}</td>
+                                    <td>{{ $cuti->jenis_cuti }}</td>
+                                    <td>{{ $cuti->start_date->format('d/m/Y') }} - {{ $cuti->end_date->format('d/m/Y') }}</td>
+                                    <td>
+                                        <span class="badge bg-{{ $cuti->status === 'approved' ? 'success' : 'warning' }}">
+                                            {{ ucfirst($cuti->status) }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <button type="button" 
+                                                class="btn btn-sm btn-primary"
+                                                data-bs-toggle="modal" 
+                                                data-bs-target="#approvalModal{{ $cuti->id }}">
+                                            Review
+                                        </button>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="7" class="text-center">Tidak ada data</td>
+                                </tr>
+                            @endforelse
                         </tbody>
                     </table>
                 </div>
+
+                {{ $cutiList->links() }}
             </div>
         </div>
     </div>
 
-    <style>
-    .form-select, .form-control {
-        border-radius: 8px;
-        border-color: #E5E7EB;
-    }
-    .form-select:focus, .form-control:focus {
-        border-color: #7C3AED;
-        box-shadow: 0 0 0 0.25rem rgba(124, 58, 237, 0.25);
-    }
-    .badge {
-        padding: 0.5rem 0.75rem;
-        font-weight: 500;
-        border-radius: 20px;
-    }
-    .bg-purple-100 {
-        background-color: #F3E8FF;
-    }
-    .text-purple {
-        color: #7C3AED;
-    }
-    </style>
+    @foreach($cutiList as $cuti)
+        <!-- Modal Approval -->
+        <div class="modal fade" id="approvalModal{{ $cuti->id }}" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form action="{{ route('cuti.approval.update', $cuti->id) }}" method="POST">
+                        @csrf
+                        @method('PUT')
+                        <div class="modal-header">
+                            <h5 class="modal-title">Review Pengajuan Cuti</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label class="form-label">Status</label>
+                                <select name="status" class="form-select" required>
+                                    <option value="approved">Approve</option>
+                                    <option value="rejected">Reject</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Catatan</label>
+                                <textarea name="notes" class="form-control" rows="3"></textarea>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                            <button type="submit" class="btn btn-primary">Simpan</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    @endforeach
 </x-app-layout> 
