@@ -70,25 +70,57 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse ($cutis as $cuti)
-                                <tr>
-                                    <td>{{ $cuti->id }}</td>
-                                    <td>{{ $cuti->created_at->format('d M Y') }}</td>
-                                    <td>{{ ucfirst($cuti->jenis) }}</td>
-                                    <td>{{ $cuti->start }} - {{ $cuti->end }}</td>
-                                    <td>{{ $cuti->total_hari }} Hari</td>
-                                    <td>
-                                        <span class="badge"
-                                            style="background-color: {{ $cuti->status == 'pending' ? '#FCD34D' : '#10B981' }}; color: {{ $cuti->status == 'pending' ? '#92400E' : '#FFFFFF' }};">
-                                            {{ ucfirst($cuti->status) }}
-                                        </span>
-                                    </td>
-                                </tr>
-                            @empty
-                                <tr>
-                                    <td colspan="6" class="text-center">Tidak ada data cuti yang ditemukan.</td>
-                                </tr>
-                            @endforelse
+                            @foreach($cutiList as $cuti)
+                            <tr>
+                                <td class="text-center">
+                                    <input type="checkbox" class="form-check-input cuti-checkbox" value="{{ $cuti->id }}">
+                                </td>
+                                <td class="fw-semibold">{{ $cuti->no_registrasi }}</td>
+                                <td>{{ $cuti->created_at->format('d/m/Y') }}</td>
+                                <td>{{ $cuti->jenis_cuti }}</td>
+                                <td class="text-nowrap">
+                                    {{ $cuti->start_date->format('d/m/Y') }} - {{ $cuti->end_date->format('d/m/Y') }}
+                                </td>
+                                <td>{{ $cuti->total_days }} hari</td>
+                                <td>
+                                    <span class="badge bg-{{ $cuti->status_color ?? 'secondary' }}">
+                                        {{ ucfirst($cuti->status) }}
+                                    </span>
+                                </td>
+                                <td class="text-center" style="white-space: nowrap;">
+                                    <div class="d-flex justify-content-center gap-1">
+                                        {{-- Tombol Export Surat --}}
+                                        <a href="{{ route('cuti.export-surat', $cuti->id) }}" 
+                                           class="btn btn-sm btn-outline-success" 
+                                           data-bs-toggle="tooltip" title="Export Surat">
+                                            <i class="fas fa-file-pdf">Export</i>
+                                        </a>
+                                
+                                        {{-- Tombol Review Pengajuan (Hanya untuk Supervisor & HRD) --}}
+                                        @if(auth()->user()->role === 'supervisor' || auth()->user()->role === 'hrd')
+                                            <a href="{{ route('cuti.approval.update', $cuti->id) }}" 
+                                               class="btn btn-sm btn-outline-primary" 
+                                               data-bs-toggle="tooltip" title="Review Pengajuan">
+                                                <i class="fas fa-clipboard-check">Review</i>
+                                            </a>
+                                        @endif
+                                
+                                        {{-- Tombol Hapus (Hanya jika status pending dan user yang sama) --}}
+                                        @if(auth()->user()->id === $cuti->user_id && $cuti->status === 'pending')
+                                            <form action="{{ route('cuti.destroy', $cuti->id) }}" method="POST" class="d-inline">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-sm btn-outline-danger" 
+                                                        data-bs-toggle="tooltip" title="Hapus Pengajuan"
+                                                        onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')">
+                                                    <i class="fas fa-trash-alt">hapus</i>
+                                                </button>
+                                            </form>
+                                        @endif
+                                    </div>
+                                </td>                                
+                            </tr>
+                            @endforeach
                         </tbody>
                     </table>
                 </div>

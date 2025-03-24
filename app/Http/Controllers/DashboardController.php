@@ -12,19 +12,19 @@ class DashboardController extends Controller
     public function index(Request $request)
     {
         $cutis = Cuti::where('user_id', Auth::id())->get();
-        $total_hari = Cuti::where('user_id', Auth::id())->where('status', 'approved')->sum('total_hari');
+        $total_hari = Cuti::where('user_id', Auth::id())->where('status', 'approved')->sum('total_days');
         if ($total_hari == null) {
             $total_hari = 0;
         }
-        $pengajuan = Cuti::where('user_id', Auth::id())->where('status', 'pending')->sum('total_hari');
+        $pengajuan = Cuti::where('user_id', Auth::id())->where('status', 'pending')->sum('total_days');
         if ($pengajuan == null) {
             $pengajuan = 0;
         }
-        $rejected = Cuti::where('user_id', Auth::id())->where('status', 'rejected')->sum('total_hari');
+        $rejected = Cuti::where('user_id', Auth::id())->where('status', 'rejected')->sum('total_days');
         if ($rejected == null) {
             $rejected = 0;
         }
-        $approved = Cuti::where('user_id', Auth::id())->where('status', 'approved')->sum('total_hari');
+        $approved = Cuti::where('user_id', Auth::id())->where('status', 'approved')->sum('total_days');
         if ($approved == null) {
             $approved = 0;
         }
