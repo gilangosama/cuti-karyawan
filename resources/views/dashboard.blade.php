@@ -122,9 +122,9 @@
                         <tbody>
                             @forelse ($cutis as $cuti)
                                 <tr>
-                                    <td>{{ $cuti->jenis }}</td>
-                                    <td>{{ $cuti->start }} - {{ $cuti->end }}</td>
-                                    <td>{{ $cuti->total_days }} Hari</td>
+                                    <td>{{ $cuti->jenis_cuti }}</td>
+                                    <td>{{ $cuti->created_at->format('d/m/Y') }}</td>
+                                    <td>{{ $cuti->total_hari }} Hari</td>
                                     <td>
                                         @if ($cuti->status == 'pending')
                                             <span class="badge bg-primary">Pending</span>
