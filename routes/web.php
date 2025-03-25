@@ -50,6 +50,7 @@ Route::middleware(['auth'])->group(function () {
         Route::put('/{cuti}', [CutiApprovalController::class, 'update'])->name('cuti.approval.update');
         Route::get('/detail', [CutiApprovalController::class, 'detail'])->name('cuti.approval.detail');
         Route::get('/hrd', [CutiApprovalController::class, 'hrd'])->name('approval.hrd');
+        Route::get('/hrd/index', [UserController::class, 'index'])->name('hrd.index');
     });
 
     Route::prefix('hrd')->group(function () {

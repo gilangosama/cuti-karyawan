@@ -23,7 +23,7 @@
                             </div>
                             <div class="text-white">
                                 <div class="fs-6 fw-medium mb-1">Cuti Diambil</div>
-                                <div class="fs-3 fw-bold">{{ $total_hari }} Hari</div>
+                                <div class="fs-3 fw-bold">{{ $total_days }} Hari</div>
                             </div>
                         </div>
                     </div>

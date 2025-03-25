@@ -17,7 +17,7 @@
                     <div class="row g-3">
                         <div class="col-md-6">
                             <label class="form-label small fw-medium text-muted">Nama Karyawan</label>
-                            <p class="mb-0" id="nama"></p>
+                            <p class="mb-0" id="nama">{{  }}</p>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label small fw-medium text-muted">Departemen</label>
