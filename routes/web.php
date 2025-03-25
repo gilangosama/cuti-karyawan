@@ -9,7 +9,6 @@ use App\Http\Controllers\SetupAppController;
 use App\Http\Controllers\HrdController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\ProfilController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -20,11 +19,13 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/dashboard/{id}/detail', [DashboardController::class, 'detail'])->name('dashboard.detail');
 
-    Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
-    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::patch('/profil/{id}', [ProfilController::class, 'update'])->name('profil.update');
+    Route::prefix('profile')->group(function () {
+        Route::get('/', [ProfileController::class, 'index'])->name('profile.index');
+        Route::get('/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+        Route::patch('/update', [ProfileController::class, 'update'])->name('profile.update');
+        Route::patch('/update-profil/{id}', [ProfileController::class, 'updateProfil'])->name('profile.update-profil');
+        Route::delete('/destroy', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    });
 
     Route::prefix('calendar')->group(function () {
         Route::get('/', [CalendarController::class, 'index']);
@@ -49,23 +50,20 @@ Route::middleware(['auth'])->group(function () {
 
     Route::prefix('approval')->group(function () {
         Route::get('/', [CutiApprovalController::class, 'index'])->name('cuti.approval.index');
-        Route::put('/{cuti}', [CutiApprovalController::class, 'update'])->name('cuti.approval.update');
         Route::get('/detail/{id}', [CutiApprovalController::class, 'detail'])->name('cuti.approval.detail');
-        Route::put('/approve/{id}', [CutiApprovalController::class, 'approved'])->name('cuti.approval.approve');
-        Route::put('/reject/{id}', [CutiApprovalController::class, 'reject'])->name('cuti.approval.reject');
         Route::get('/hrd', [CutiApprovalController::class, 'hrd'])->name('approval.hrd');
-        Route::get('/hrd', [UserController::class, 'index'])->name('hrd.index');
+        Route::put('/{cuti}', [CutiApprovalController::class, 'update'])->name('cuti.approval.update');
+        Route::post('/{id}/approve', [CutiApprovalController::class, 'approved'])->name('cuti.approval.approve');
+        Route::post('/{id}/reject', [CutiApprovalController::class, 'reject'])->name('cuti.approval.reject');
     });
 
     Route::prefix('hrd')->group(function () {
-        Route::get('/index', [UserController::class, 'index'])->name('hrd.index');
-        Route::get('/detail', [UserController::class, 'detail'])->name('hrd.detail');
+        Route::get('/', [UserController::class, 'index'])->name('hrd.index');
         Route::get('/create', [UserController::class, 'create'])->name('hrd.create');
         Route::post('/store', [UserController::class, 'store'])->name('hrd.store');
         Route::get('/edit/{id}', [UserController::class, 'edit'])->name('hrd.edit');
         Route::put('/update/{id}', [UserController::class, 'update'])->name('hrd.update');
         Route::delete('/delete/{id}', [UserController::class, 'destroy'])->name('hrd.destroy');
-    
     });
 
     Route::prefix('setup-app')->group(function () {

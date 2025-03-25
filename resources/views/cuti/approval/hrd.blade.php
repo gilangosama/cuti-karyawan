@@ -41,6 +41,9 @@
                                                 data-bs-target="#approvalModal{{ $cuti->id }}">
                                             Review
                                         </button>
+                                        <a href="{{ route('cuti.approval.detail', ['id' => $cuti->id]) }}" class="btn btn-sm btn-info">
+                                            Lihat Detail
+                                        </a>
                                     </td>
                                 </tr>
                             @empty

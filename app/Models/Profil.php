@@ -16,7 +16,8 @@ class Profil extends Model
         'section',
         'position',
         'department',
-        'join_date'
+        'join_date',
+        'jenis'
     ];
 
     protected $dates = [

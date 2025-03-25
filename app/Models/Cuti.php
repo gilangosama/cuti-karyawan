@@ -22,14 +22,18 @@ class Cuti extends Model
         'approval2_id',
         'hrd_id',
         'doctor_letter',
-        'supporting_letter'
+        'supporting_letter',
+        'dokumen',
+        'notes'
     ];
 
     protected $dates = [
         'start_date',
         'end_date',
         'created_at',
-        'updated_at'
+        'updated_at',
+        'approval1_date',
+        'approval2_date'
     ];
 
     protected $casts = [

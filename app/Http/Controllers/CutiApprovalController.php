@@ -62,9 +62,12 @@ class CutiApprovalController extends Controller
 
     public function detail($id)
     {
-        $cuti = Cuti::with(['user', 'approval1', 'approval2', 'hrd'])->findOrFail($id);
-
-        return view('cuti.approval.detail', compact('cuti'));
+        try {
+            $cuti = Cuti::with(['user.profil', 'approval1', 'approval2', 'hrd'])->findOrFail($id);
+            return view('cuti.approval.detail', compact('cuti'));
+        } catch (\Exception $e) {
+            return back()->with('error', 'Data cuti tidak ditemukan');
+        }
     }
 
     public function hrd()
@@ -81,21 +84,45 @@ class CutiApprovalController extends Controller
 
     public function approved($id)
     {
-        $cuti = Cuti::findOrFail($id);
+        try {
+            $cuti = Cuti::findOrFail($id);
+            
+            if (auth()->user()->role === 'supervisor') {
+                $cuti->approval1_id = auth()->id();
+                $cuti->approval1_date = now();
+            } elseif (auth()->user()->role === 'hrd') {
+                $cuti->approval2_id = auth()->id();
+                $cuti->approval2_date = now();
+            }
+            
+            $cuti->status = 'approved';
+            $cuti->save();
 
-        $cuti->status = 'approved';
-        $cuti->save();
-
-        return redirect()->back()->with('success', 'Cuti berhasil disetujui');
+            return redirect()->back()->with('success', 'Cuti berhasil disetujui');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
 
     public function reject($id)
     {
-        $cuti = Cuti::findOrFail($id);
+        try {
+            $cuti = Cuti::findOrFail($id);
+            
+            if (auth()->user()->role === 'supervisor') {
+                $cuti->approval1_id = auth()->id();
+                $cuti->approval1_date = now();
+            } elseif (auth()->user()->role === 'hrd') {
+                $cuti->approval2_id = auth()->id();
+                $cuti->approval2_date = now();
+            }
+            
+            $cuti->status = 'rejected';
+            $cuti->save();
 
-        $cuti->status = 'rejected';
-        $cuti->save();
-
-        return redirect()->back()->with('success', 'Cuti berhasil ditolak');
+            return redirect()->back()->with('success', 'Cuti berhasil ditolak');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
 }

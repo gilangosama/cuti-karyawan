@@ -76,7 +76,7 @@
         </div>
 
         <!-- Form Surat Cuti -->
-        <div id="formCuti" class="d-none"  action="{{ route('cuti.store') }}" id="cutiForm"
+        <form id="formCuti" class="d-none" action="{{ route('cuti.store') }}" 
             data-hmin="{{ $hMinCuti }}" enctype="multipart/form-data" method="POST">
             @csrf
             <div class="card border-0 shadow-sm rounded-3">
@@ -174,15 +174,18 @@
                         <div id="fileUploadFields" class="mb-4">
                             <div id="suratDokterField" class="mb-3 d-none">
                                 <label class="form-label">Surat Dokter</label>
-                                <input type="file" name="doctor_letter" class="form-control">
-                                <small class="form-text text-muted">Upload surat keterangan dokter
-                                    (PDF/JPG/PNG)</small>
+                                <input type="file" name="doctor_letter" class="form-control" id="doctor_letter" accept=".pdf,.jpg,.jpeg,.png">
+                                @error('doctor_letter')
+                                    <div class="text-danger mt-1">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div id="suratPendukungField" class="mb-3 d-none">
-                                <label class="form-label">Surat Pendukung</label>
-                                <input type="file" name="supporting_letter" class="form-control">
-                                <small class="form-text text-muted">Upload surat keterangan dokter/bidan
-                                    (PDF/JPG/PNG)</small>
+                                <label class="form-label">Surat Keterangan Melahirkan</label>
+                                <input type="file" name="supporting_letter" class="form-control" id="supporting_letter" accept=".pdf,.jpg,.jpeg,.png">
+                                @error('supporting_letter')
+                                    <div class="text-danger mt-1">{{ $message }}</div>
+                                @enderror
+                                <small class="form-text text-muted">Upload surat keterangan dari dokter/bidan (PDF/JPG/PNG, max 2MB)</small>
                             </div>
                         </div>
 
@@ -196,7 +199,7 @@
                     </form>
                 </div>
             </div>
-        </div>
+        </form>
     </div>
 
     <style>
@@ -353,23 +356,21 @@
         }
 
         document.addEventListener('DOMContentLoaded', function() {
-            const radioButtons = document.querySelectorAll('input[name="jenis_cuti"]');
+            const jenisCutiSelect = document.getElementById('jenis_cuti');
             const suratDokterField = document.getElementById('suratDokterField');
             const suratPendukungField = document.getElementById('suratPendukungField');
 
-            radioButtons.forEach(radio => {
-                radio.addEventListener('change', function() {
-                    // Sembunyikan semua field upload
-                    suratDokterField.classList.add('d-none');
-                    suratPendukungField.classList.add('d-none');
+            jenisCutiSelect.addEventListener('change', function() {
+                // Sembunyikan semua field dokumen
+                suratDokterField.classList.add('d-none');
+                suratPendukungField.classList.add('d-none');
 
-                    // Tampilkan field sesuai jenis cuti yang dipilih
-                    if (this.value === 'sakit') {
-                        suratDokterField.classList.remove('d-none');
-                    } else if (this.value === 'melahirkan') {
-                        suratPendukungField.classList.remove('d-none');
-                    }
-                });
+                // Tampilkan field sesuai jenis cuti
+                if (this.value === 'sakit') {
+                    suratDokterField.classList.remove('d-none');
+                } else if (this.value === 'melahirkan') {
+                    suratPendukungField.classList.remove('d-none');
+                }
             });
         });
     </script>

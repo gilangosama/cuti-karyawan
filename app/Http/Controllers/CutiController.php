@@ -83,80 +83,78 @@ class CutiController extends Controller
                 'approval_2' => 'required|exists:users,id',
                 'hrd_approval' => 'required|exists:users,id',
             ];
-            
+
+            // Tambah validasi dokumen berdasarkan jenis cuti
             if ($request->jenis_cuti === 'sakit') {
                 $rules['doctor_letter'] = 'required|file|mimes:pdf,jpg,jpeg,png|max:2048';
-            }
-            if ($request->jenis_cuti === 'melahirkan') {
+            } elseif ($request->jenis_cuti === 'melahirkan') {
                 $rules['supporting_letter'] = 'required|file|mimes:pdf,jpg,jpeg,png|max:2048';
             }
-            
+
             $validated = $request->validate($rules);
 
             DB::beginTransaction();
 
-            // Generate nomor registrasi
-            $noRegistrasi = 'CUTI-' . auth()->id() . '-' . now()->timestamp;
+            try {
+                // Generate nomor registrasi
+                $noRegistrasi = 'CUTI-' . auth()->id() . '-' . now()->timestamp;
 
-            // Hitung total hari
-            $startDate = Carbon::parse($request->start_date);
-            $endDate = Carbon::parse($request->end_date);
-            $totalDays = $startDate->diffInDays($endDate, false) + 1;
+                // Hitung total hari
+                $startDate = Carbon::parse($request->start_date);
+                $endDate = Carbon::parse($request->end_date);
+                $totalDays = $startDate->diffInDays($endDate) + 1;
 
-            // Buat record cuti baru
-            $cuti = new Cuti();
-            $cuti->user_id = auth()->id();
-            $cuti->no_registrasi = $noRegistrasi;
-            $cuti->jenis_cuti = $request->jenis_cuti;
-            $cuti->start_date = $request->start_date;
-            $cuti->end_date = $request->end_date;
-            $cuti->total_days = $totalDays;
-            $cuti->address = $request->address;
-            $cuti->status = 'pending';
-            $cuti->approval1_id = $request->approval_1;
-            $cuti->approval2_id = $request->approval_2;
-            $cuti->hrd_id = $request->hrd_approval;
+                // Buat record cuti baru
+                $cuti = new Cuti();
+                $cuti->user_id = auth()->id();
+                $cuti->no_registrasi = $noRegistrasi;
+                $cuti->jenis_cuti = $request->jenis_cuti;
+                $cuti->start_date = $startDate;
+                $cuti->end_date = $endDate;
+                $cuti->total_days = $totalDays;
+                $cuti->address = $request->address;
+                $cuti->status = 'pending';
+                $cuti->approval1_id = $request->approval_1;
+                $cuti->approval2_id = $request->approval_2;
+                $cuti->hrd_id = $request->hrd_approval;
 
-            // Handle upload file untuk cuti sakit
-            if ($request->jenis_cuti === 'sakit' && $request->hasFile('doctor_letter')) {
-                $file = $request->file('doctor_letter');
-                $filename = time() . '_' . $file->getClientOriginalName();
-                Storage::makeDirectory('public/doctor_letters');
-                $file->storeAs('public/doctor_letters', $filename);
-                $cuti->doctor_letter = $filename;
+                // Handle upload dokumen untuk cuti sakit
+                if ($request->hasFile('doctor_letter')) {
+                    $file = $request->file('doctor_letter');
+                    $fileName = time() . '_' . $file->getClientOriginalName();
+                    $path = $file->storeAs('dokumen-cuti', $fileName, 'public');
+                    $cuti->doctor_letter = $path;
+                }
+
+                // Handle upload dokumen untuk cuti melahirkan
+                if ($request->hasFile('supporting_letter')) {
+                    $file = $request->file('supporting_letter');
+                    $fileName = time() . '_' . $file->getClientOriginalName();
+                    $path = $file->storeAs('dokumen-cuti', $fileName, 'public');
+                    $cuti->supporting_letter = $path;
+                }
+
+                // Simpan cuti
+                $cuti->save();
+
+                DB::commit();
+
+                return redirect()->route('cuti.index')
+                    ->with('success', 'Pengajuan cuti berhasil dibuat');
+
+            } catch (\Exception $e) {
+                DB::rollback();
+                \Log::error('Error saat menyimpan cuti: ' . $e->getMessage());
+                return back()
+                    ->withInput()
+                    ->with('error', 'Terjadi kesalahan saat menyimpan data: ' . $e->getMessage());
             }
-
-            // Handle upload file untuk cuti melahirkan
-            if ($request->jenis_cuti === 'melahirkan' && $request->hasFile('supporting_letter')) {
-                $file = $request->file('supporting_letter');
-                $filename = time() . '_' . $file->getClientOriginalName();
-                Storage::makeDirectory('public/supporting_letters');
-                $file->storeAs('public/supporting_letters', $filename);
-                $cuti->supporting_letter = $filename;
-            }
-
-            // Simpan data cuti
-            $cuti->save();
-
-            // Log untuk debugging
-            \Log::info('Cuti berhasil disimpan:', [
-                'id' => $cuti->id,
-                'no_registrasi' => $cuti->no_registrasi,
-                'jenis_cuti' => $cuti->jenis_cuti
-            ]);
-
-            DB::commit();
-
-            return redirect()->route('cuti.index')
-                ->with('success', 'Pengajuan cuti berhasil dibuat.');
 
         } catch (\Exception $e) {
-            DB::rollback();
-            \Log::error('Error saat menyimpan cuti: ' . $e->getMessage());
-            
+            \Log::error('Error saat validasi: ' . $e->getMessage());
             return back()
                 ->withInput()
-                ->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+                ->with('error', 'Terjadi kesalahan saat validasi: ' . $e->getMessage());
         }
     }
 

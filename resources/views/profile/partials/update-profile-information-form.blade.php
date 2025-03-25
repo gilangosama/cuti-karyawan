@@ -13,22 +13,24 @@
         @csrf
     </form>
 
-    <form method="post" action="{{ route('profile.update') }}" class="mt-4">
+    <form method="post" action="{{ route('profile.update') }}" class="mt-6 space-y-6">
         @csrf
         @method('patch')
 
         <div class="mb-3">
-            <x-input-label for="name" :value="__('Name')" class="form-label" />
-            <x-text-input id="name" name="name" type="text" class="form-control" :value="old('name', $user->name)" required
-                autofocus autocomplete="name" />
-            <x-input-error class="mt-2 text-danger" :messages="$errors->get('name')" />
+            <label for="name">Nama</label>
+            <input id="name" name="name" type="text" class="form-control" value="{{ old('name', $user->name) }}" required autofocus>
+            @error('name')
+                <div class="text-danger mt-2">{{ $message }}</div>
+            @enderror
         </div>
 
         <div class="mb-3">
-            <x-input-label for="email" :value="__('Email')" class="form-label" />
-            <x-text-input id="email" name="email" type="email" class="form-control" :value="old('email', $user->email)" required
-                autocomplete="username" />
-            <x-input-error class="mt-2 text-danger" :messages="$errors->get('email')" />
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" class="form-control" value="{{ old('email', $user->email) }}" required>
+            @error('email')
+                <div class="text-danger mt-2">{{ $message }}</div>
+            @enderror
 
             @if ($user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && !$user->hasVerifiedEmail())
                 <div class="mt-2">
@@ -49,8 +51,32 @@
             @endif
         </div>
 
+        <div class="mb-3">
+            <label for="department">Department</label>
+            <input id="department" name="department" type="text" class="form-control" value="{{ old('department', $user->profil->department ?? '') }}" required>
+            @error('department')
+                <div class="text-danger mt-2">{{ $message }}</div>
+            @enderror
+        </div>
+
+        <div class="mb-3">
+            <label for="position">Position</label>
+            <input id="position" name="position" type="text" class="form-control" value="{{ old('position', $user->profil->position ?? '') }}" required>
+            @error('position')
+                <div class="text-danger mt-2">{{ $message }}</div>
+            @enderror
+        </div>
+
+        <div class="mb-3">
+            <label for="join_date">Join Date</label>
+            <input id="join_date" name="join_date" type="date" class="form-control" value="{{ old('join_date', $user->profil->join_date ?? '') }}" required>
+            @error('join_date')
+                <div class="text-danger mt-2">{{ $message }}</div>
+            @enderror
+        </div>
+
         <div class="d-flex align-items-center gap-4">
-            <x-primary-button class="btn btn-primary">{{ __('Save') }}</x-primary-button>
+            <button type="submit" class="btn btn-primary">Save</button>
 
             @if (session('status') === 'profile-updated')
                 <p x-data="{ show: true }" x-show="show" x-transition x-init="setTimeout(() => show = false, 2000)" class="text-muted">

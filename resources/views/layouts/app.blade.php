@@ -22,104 +22,165 @@
     <body>
         <div class="d-flex">
             <!-- Sidebar -->
-            <div class="d-flex flex-column flex-shrink-0 bg-white shadow" style="width: 280px; height: 100vh; position: fixed;">
-                <!-- Logo -->
-                <div class="text-center border-bottom p-3">
-                    <img src="{{ asset('images/logo.jpg') }}" alt="Logo" height="48">
+            <div class="sidebar bg-white shadow-sm" style="width: 280px; height: 100vh; position: fixed; left: 0; top: 0;">
+                <!-- Logo Container -->
+                <div class="p-4 border-bottom">
+                    <img src="{{ asset('images/logo.jpg ') }}" alt="Logo" class="img-fluid" style="max-height: 40px;">
                 </div>
 
-                <!-- Navigation -->
-                <ul class="nav nav-pills flex-column mb-auto p-3">
-                    <li class="nav-item mb-2">
-                        <a href="{{ route('dashboard') }}" 
-                           class="nav-link {{ request()->routeIs('dashboard') ? 'active bg-purple' : 'text-dark' }}">
-                            <i class="bi bi-house-door me-2"></i>
-                            Dashboard
-                        </a>
-                    </li>
+                <!-- Menu Container -->
+                <div class="p-4">
+                    <ul class="nav flex-column gap-2">
+                        <!-- Dashboard - Semua Role -->
+                        <li class="nav-item">
+                            <a href="{{ route('dashboard') }}" 
+                               class="nav-link d-flex align-items-center {{ request()->routeIs('dashboard') ? 'active' : '' }}">
+                                <i class="bi bi-house-door fs-5 me-3"></i>
+                                <span>Dashboard</span>
+                            </a>
+                        </li>
 
-                    <li class="nav-item mb-2">
-                        <a href="{{ route('cuti.index') }}" 
-                           class="nav-link {{ request()->routeIs('cuti.index') ? 'active bg-purple' : 'text-dark' }}">
-                            <i class="bi bi-file-text me-2"></i>
-                            Data Cuti
-                        </a>
-                    </li>
+                        <!-- Menu untuk Role Karyawan -->
+                        @if(auth()->user()->role === 'user')
+                            <li class="nav-item">
+                                <a href="{{ route('cuti.index') }}" 
+                                   class="nav-link d-flex align-items-center {{ request()->routeIs('cuti.index') ? 'active' : '' }}">
+                                    <i class="bi bi-calendar3 fs-5 me-3"></i>
+                                    <span>Data Cuti</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('cuti.create') }}" 
+                                   class="nav-link d-flex align-items-center {{ request()->routeIs('cuti.create') ? 'active' : '' }}">
+                                    <i class="bi bi-file-earmark-plus fs-5 me-3"></i>
+                                    <span>Permohonan Cuti</span>
+                                </a>
+                            </li>
+                        @endif
 
-                    <li class="nav-item mb-2">
-                        <a href="{{ route('cuti.create') }}" 
-                           class="nav-link {{ request()->routeIs('cuti.create') ? 'active bg-purple' : 'text-dark' }}">
-                            <i class="bi bi-file-earmark-plus me-2"></i>
-                            Permohonan Cuti
-                        </a>
-                    </li>
+                        <!-- Menu untuk Role Approval -->
+                        @if(auth()->user()->role === 'approval')
+                            <li class="nav-item">
+                                <a href="{{ route('cuti.index') }}" 
+                                   class="nav-link d-flex align-items-center {{ request()->routeIs('cuti.index') ? 'active' : '' }}">
+                                    <i class="bi bi-calendar3 fs-5 me-3"></i>
+                                    <span>Data Cuti</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('cuti.create') }}" 
+                                   class="nav-link d-flex align-items-center {{ request()->routeIs('cuti.create') ? 'active' : '' }}">
+                                    <i class="bi bi-file-earmark-plus fs-5 me-3"></i>
+                                    <span>Permohonan Cuti</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('cuti.approval.index') }}" 
+                                   class="nav-link d-flex align-items-center {{ request()->routeIs('cuti.approval.*') ? 'active' : '' }}">
+                                    <i class="bi bi-check-square fs-5 me-3"></i>
+                                    <span>Approval 1 & 2</span>
+                                </a>
+                            </li>
+                        @endif
 
-                    <!-- Dropdown Approval -->
-                    <li class="nav-item mb-2">
-                        <button class="nav-link w-100 d-flex justify-content-between align-items-center border-0 bg-transparent {{ request()->routeIs('approval.*') ? 'active bg-purple' : 'text-dark' }}"
-                                type="button"
-                                data-bs-toggle="collapse" 
-                                data-bs-target="#approvalCollapse" 
-                                aria-expanded="true"
-                                aria-controls="approvalCollapse">
-                            <div>
-                                <i class="bi bi-check-circle me-2"></i>
-                                Approval
-                            </div>
-                            <i class="bi bi-chevron-down small transition-transform"></i>
-                        </button>
-                        <div class="collapse" id="approvalCollapse">
-                            <ul class="nav flex-column ms-3 mt-2">
-                                <li class="nav-item mb-2">
-                                    <a href="{{ route('cuti.approval.index') }}" 
-                                       class="nav-link {{ request()->routeIs('approval.index') ? 'active bg-purple' : 'text-dark' }}">
-                                        <i class="bi bi-arrow-right me-2 small"></i>
-                                        Approval 1 & 2
-                                    </a>
-                                </li>
-                                <li class="nav-item mb-2">
-                                    <a href="{{ route('approval.hrd') }}" 
-                                       class="nav-link {{ request()->routeIs('approval.hrd') ? 'active bg-purple' : 'text-dark' }}">
-                                        <i class="bi bi-arrow-right me-2 small"></i>
-                                        Approval HRD
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
-
-                    <li class="nav-item mb-2">
-                        <a href="{{ route('hrd.index') }}" 
-                           class="nav-link {{ request()->routeIs('hrd.index') ? 'active bg-purple' : 'text-dark' }}">
-                            <i class="bi bi-people me-2"></i>
-                            Data Karyawan
-                        </a>
-                    </li>
-                </ul>
-
-                <!-- User Info -->
-                <div class="border-top p-3">
-                    <div class="d-flex align-items-center">
-                        <div class="flex-shrink-0">
-                            <a href="{{ route('profile.edit') }}" class="text-decoration-none">
-                                <div class="rounded-circle bg-light d-flex align-items-center justify-content-center" 
-                                     style="width: 40px; height: 40px;">
-                                    <i class="bi bi-person text-secondary"></i>
+                        <!-- Menu untuk Role HRD -->
+                        @if(auth()->user()->role === 'hrd')
+                            <li class="nav-item">
+                                <a href="{{ route('cuti.index') }}" 
+                                   class="nav-link d-flex align-items-center {{ request()->routeIs('cuti.index') ? 'active' : '' }}">
+                                    <i class="bi bi-calendar3 fs-5 me-3"></i>
+                                    <span>Data Cuti</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('cuti.create') }}" 
+                                   class="nav-link d-flex align-items-center {{ request()->routeIs('cuti.create') ? 'active' : '' }}">
+                                    <i class="bi bi-file-earmark-plus fs-5 me-3"></i>
+                                    <span>Permohonan Cuti</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <div class="nav-link d-flex align-items-center cursor-pointer" 
+                                     data-bs-toggle="collapse" 
+                                     data-bs-target="#approvalCollapse">
+                                    <i class="bi bi-check-square fs-5 me-3"></i>
+                                    <span>Approval</span>
+                                    <i class="bi bi-chevron-down ms-auto"></i>
                                 </div>
-                            </a>
-                        </div>
-                        <div class="ms-3">
-                            <a href="{{ route('profile.edit') }}" class="text-decoration-none">
-                                <h6 class="mb-0 text-dark">{{ Auth::user()->name }}</h6>
-                            </a>
-                            <form method="POST" action="{{ route('logout') }}">
-                                @csrf
-                                <button type="submit" class="btn btn-link text-secondary p-0 small">
-                                    Keluar
-                                </button>
-                            </form>
-                        </div>
-                    </div>
+                                <div class="collapse {{ request()->routeIs('cuti.approval.*', 'approval.hrd') ? 'show' : '' }}" 
+                                     id="approvalCollapse">
+                                    <ul class="nav flex-column ms-4 mt-2">
+                                        <li class="nav-item">
+                                            <a href="{{ route('cuti.approval.index') }}" 
+                                               class="nav-link {{ request()->routeIs('cuti.approval.index') ? 'active' : '' }}">
+                                                <i class="bi bi-arrow-right me-2"></i>
+                                                Approval 1 & 2
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="{{ route('approval.hrd') }}" 
+                                               class="nav-link {{ request()->routeIs('approval.hrd') ? 'active' : '' }}">
+                                                <i class="bi bi-arrow-right me-2"></i>
+                                                Approval HRD
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('hrd.index') }}" 
+                                   class="nav-link d-flex align-items-center {{ request()->routeIs('hrd.*') ? 'active' : '' }}">
+                                    <i class="bi bi-people fs-5 me-3"></i>
+                                    <span>Data Karyawan</span>
+                                </a>
+                            </li>
+                        @endif
+
+                        <!-- Divider -->
+                        <li class="nav-item">
+                            <hr class="my-3 border-gray-200">
+                        </li>
+
+                        <!-- Profile Menu - Untuk Semua Role -->
+                        <li class="nav-item">
+                            <div class="nav-link d-flex align-items-center cursor-pointer" 
+                                 data-bs-toggle="collapse" 
+                                 data-bs-target="#profileCollapse">
+                                <i class="bi bi-person-circle fs-5 me-3"></i>
+                                <span>{{ auth()->user()->name }}</span>
+                                <i class="bi bi-chevron-down ms-auto"></i>
+                            </div>
+                            <div class="collapse" id="profileCollapse">
+                                <ul class="nav flex-column ms-4 mt-2">
+                                    {{-- <li class="nav-item">
+                                        <a href="{{ route('profile.index') }}" 
+                                           class="nav-link {{ request()->routeIs('profile.index') ? 'active' : '' }}">
+                                            <i class="bi bi-person me-2"></i>
+                                            Lihat Profile
+                                        </a>
+                                    </li> --}}
+                                    <li class="nav-item">
+                                        <a href="{{ route('profile.edit') }}" 
+                                           class="nav-link {{ request()->routeIs('profile.edit') ? 'active' : '' }}">
+                                            <i class="bi bi-pencil me-2"></i>
+                                            Edit Profile
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <form method="POST" action="{{ route('logout') }}">
+                                            @csrf
+                                            <a href="{{ route('logout') }}"
+                                               class="nav-link text-danger"
+                                               onclick="event.preventDefault(); this.closest('form').submit();">
+                                                <i class="bi bi-box-arrow-right me-2"></i>
+                                                Keluar
+                                            </a>
+                                        </form>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
                 </div>
             </div>
 
@@ -143,19 +204,76 @@
         @stack('scripts')
 
         <style>
-        .nav-pills .nav-link {
+        .sidebar {
+            background: linear-gradient(to bottom, #ffffff, #f8f9fa);
+        }
+
+        .nav-link {
+            color: #495057;
+            padding: 0.75rem 1rem;
             border-radius: 8px;
-            padding: 10px 16px;
+            transition: all 0.3s ease;
         }
-        .nav-pills .nav-link.active {
-            background-color: #7C3AED !important;
+
+        .nav-link:hover {
+            background-color: #f0f2f5;
+            color: #6610f2;
         }
-        .nav-pills .nav-link:hover:not(.active) {
-            background-color: #F3F4F6;
+
+        .nav-link.active {
+            background-color: #6610f2;
+            color: #ffffff;
         }
-        .bg-purple {
-            background-color: #7C3AED !important;
-            color: white !important;
+
+        .nav-link.active i {
+            color: #ffffff;
+        }
+
+        .cursor-pointer {
+            cursor: pointer;
+        }
+
+        /* Submenu styles */
+        #approvalCollapse .nav-link {
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+        }
+
+        #approvalCollapse .nav-link:hover {
+            background-color: #f0f2f5;
+        }
+
+        #approvalCollapse .nav-link.active {
+            background-color: transparent;
+            color: #6610f2;
+        }
+
+        /* Icon styles */
+        .bi {
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover .bi {
+            transform: scale(1.1);
+        }
+
+        #profileCollapse .nav-link {
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+        }
+
+        #profileCollapse .nav-link:hover {
+            background-color: #f0f2f5;
+        }
+
+        #profileCollapse .nav-link.active {
+            background-color: transparent;
+            color: #6610f2;
+        }
+
+        #profileCollapse .text-danger:hover {
+            background-color: #fee2e2;
+            color: #dc2626;
         }
         </style>
 

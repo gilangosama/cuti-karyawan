@@ -11,32 +11,49 @@ class DashboardController extends Controller
 {
     public function index(Request $request)
     {
-        $cutis = Cuti::where('user_id', Auth::id())->get();
-        $total_days = Cuti::where('user_id', Auth::id())->where('status', 'approved')->sum('total_days');
-        if ($total_days == null) {
-            $total_days = 0;
-        }
-        $pengajuan = Cuti::where('user_id', Auth::id())->where('status', 'pending')->sum('total_days');
-        if ($pengajuan == null) {
-            $pengajuan = 0;
-        }
-        $rejected = Cuti::where('user_id', Auth::id())->where('status', 'rejected')->sum('total_days');
-        if ($rejected == null) {
-            $rejected = 0;
-        }
-        $approved = Cuti::where('user_id', Auth::id())->where('status', 'approved')->sum('total_days');
-        if ($approved == null) {
-            $approved = 0;
-        }
-        $kouta = profil::where('user_id', Auth::id())->first();
-        $sisa_cuti = $kouta->kouta;
-
+        // Ambil data cuti untuk user yang sedang login
+        $cutis = Cuti::where('user_id', Auth::id());
+        
+        // Jika ada filter status
         if ($request->status) {
-            $cutis = Cuti::where('user_id', Auth::id())->where('status', $request->status)->get();
+            $cutis = $cutis->where('status', $request->status);
         }
+        
+        // Hitung jumlah pengajuan (count jumlah record, bukan sum total_days)
+        $pengajuan = Cuti::where('user_id', Auth::id())
+                        ->where('status', 'pending')
+                        ->count();
+        
+        // Hitung jumlah yang disetujui (count jumlah record)
+        $approved = Cuti::where('user_id', Auth::id())
+                        ->where('status', 'approved')
+                        ->count();
+        
+        // Hitung jumlah yang ditolak (count jumlah record)
+        $rejected = Cuti::where('user_id', Auth::id())
+                        ->where('status', 'rejected')
+                        ->count();
+        
+        // Hitung total hari cuti yang sudah diambil (sum total_days yang approved)
+        $total_days = Cuti::where('user_id', Auth::id())
+                        ->where('status', 'approved')
+                        ->sum('total_days');
+        
+        // Ambil kuota cuti dari profil
+        $kouta = Profil::where('user_id', Auth::id())->first();
+        $sisa_cuti = $kouta->kouta;
+        
+        // Get final cutis collection
+        $cutis = $cutis->latest()->get();
 
-        // dd($sisa_cuti);
-        return view('dashboard', compact('cutis', 'total_days', 'sisa_cuti', 'pengajuan', 'rejected', 'approved'));
+        return view('dashboard', compact(
+            'cutis',
+            'total_days',
+            'sisa_cuti',
+            'pengajuan',
+            'rejected',
+            'approved'
+        ));
     }
 
     public function detail($id)

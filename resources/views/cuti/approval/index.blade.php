@@ -12,10 +12,10 @@
                 <form method="GET" action="{{ route('cuti.approval.index') }}">
                     <div class="d-flex justify-content-between align-items-center mb-4">
                         <h5 class="fw-semibold mb-0">Filter Data</h5>
-                        <button type="button" class="btn btn-success" data-bs-toggle="modal"
+                        {{-- <button type="button" class="btn btn-success" data-bs-toggle="modal"
                             data-bs-target="#exportModal">
                             <i class="bi bi-file-excel me-2"></i>Export Excel
-                        </button>
+                        </button> --}}
                     </div>
 
                     <div class="row g-3">

@@ -27,6 +27,6 @@ class ProfilController extends Controller
             'join_date' => $request->join_date,
         ]);
 
-        return redirect()->back()->with('success', 'Profil updated successfully.');
+        return redirect()->back()->with('success', 'Profil berhasil diperbarui');
     }
 }
