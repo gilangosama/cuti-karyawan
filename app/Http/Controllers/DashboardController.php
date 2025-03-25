@@ -12,9 +12,9 @@ class DashboardController extends Controller
     public function index(Request $request)
     {
         $cutis = Cuti::where('user_id', Auth::id())->get();
-        $total_hari = Cuti::where('user_id', Auth::id())->where('status', 'approved')->sum('total_days');
-        if ($total_hari == null) {
-            $total_hari = 0;
+        $total_days = Cuti::where('user_id', Auth::id())->where('status', 'approved')->sum('total_days');
+        if ($total_days == null) {
+            $total_days = 0;
         }
         $pengajuan = Cuti::where('user_id', Auth::id())->where('status', 'pending')->sum('total_days');
         if ($pengajuan == null) {
@@ -36,7 +36,7 @@ class DashboardController extends Controller
         }
 
         // dd($sisa_cuti);
-        return view('dashboard', compact('cutis', 'total_hari', 'sisa_cuti', 'pengajuan', 'rejected', 'approved'));
+        return view('dashboard', compact('cutis', 'total_days', 'sisa_cuti', 'pengajuan', 'rejected', 'approved'));
     }
 
     public function detail($id)

@@ -12,6 +12,8 @@ class Profil extends Model
     protected $table = 'profils';
     protected $fillable = [
         'user_id',
+        'no_badge',
+        'section',
         'position',
         'department',
         'join_date'

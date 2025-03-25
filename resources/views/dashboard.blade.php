@@ -23,7 +23,7 @@
                             </div>
                             <div class="text-white">
                                 <div class="fs-6 fw-medium mb-1">Cuti Diambil</div>
-                                <div class="fs-3 fw-bold">{{ $total_hari }} Hari</div>
+                                <div class="fs-3 fw-bold">{{ $total_days }} Hari</div>
                             </div>
                         </div>
                     </div>
@@ -124,7 +124,7 @@
                                 <tr>
                                     <td>{{ $cuti->jenis_cuti }}</td>
                                     <td>{{ $cuti->created_at->format('d/m/Y') }}</td>
-                                    <td>{{ $cuti->total_hari }} Hari</td>
+                                    <td>{{ $cuti->total_days }} Hari</td>
                                     <td>
                                         @if ($cuti->status == 'pending')
                                             <span class="badge bg-primary">Pending</span>

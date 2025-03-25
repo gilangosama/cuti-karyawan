@@ -43,7 +43,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($users as $user)
+                            @forelse ($users as $user)
                                 <tr>
                                     <td>
                                         <div class="d-flex align-items-center">
@@ -91,7 +91,11 @@
                                         </form>
                                     </td>
                                 </tr>
-                            @endforeach
+                            @empty
+                                <tr>
+                                    <td colspan="5" class="text-center">Tidak ada data karyawan.</td>
+                                </tr>
+                            @endforelse
                         </tbody>
                     </table>
                 </div>
