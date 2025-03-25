@@ -19,14 +19,15 @@ class ProfileController extends Controller
     public function index(): View
     {
         return view('profile.index', [
-            'user' => Auth::user()
+            'user' => Auth::user(),
         ]);
     }
 
     public function edit(): View
     {
         return view('profile.edit', [
-            'user' => Auth::user()
+            'user' => Auth::user(),
+            'profil' => Auth::user()->profil
         ]);
     }
 

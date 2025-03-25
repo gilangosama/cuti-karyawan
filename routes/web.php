@@ -9,6 +9,7 @@ use App\Http\Controllers\SetupAppController;
 use App\Http\Controllers\HrdController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ProfilController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -23,6 +24,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::patch('/profil/{id}', [ProfilController::class, 'update'])->name('profil.update');
 
     Route::prefix('calendar')->group(function () {
         Route::get('/', [CalendarController::class, 'index']);
@@ -48,21 +50,21 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('approval')->group(function () {
         Route::get('/', [CutiApprovalController::class, 'index'])->name('cuti.approval.index');
         Route::put('/{cuti}', [CutiApprovalController::class, 'update'])->name('cuti.approval.update');
-        Route::get('/detail', [CutiApprovalController::class, 'detail'])->name('cuti.approval.detail');
+        Route::get('/detail/{id}', [CutiApprovalController::class, 'detail'])->name('cuti.approval.detail');
+        Route::put('/approve/{id}', [CutiApprovalController::class, 'approved'])->name('cuti.approval.approve');
+        Route::put('/reject/{id}', [CutiApprovalController::class, 'reject'])->name('cuti.approval.reject');
         Route::get('/hrd', [CutiApprovalController::class, 'hrd'])->name('approval.hrd');
-        Route::get('/hrd/index', [UserController::class, 'index'])->name('hrd.index');
     });
 
     Route::prefix('hrd')->group(function () {
-        Route::get('/', function () {
-            return view('hrd.index');
-        })->name('hrd.index');
-        Route::get('/create', function () {
-            return view('hrd.create');
-        })->name('hrd.create');
-        Route::get('/edit/{id}', function ($id) {
-            return view('hrd.edit');
-        })->name('hrd.edit');
+        Route::get('/index', [UserController::class, 'index'])->name('hrd.index');
+        Route::get('/detail', [UserController::class, 'detail'])->name('hrd.detail');
+        Route::get('/create', [UserController::class, 'create'])->name('hrd.create');
+        Route::post('/store', [UserController::class, 'store'])->name('hrd.store');
+        Route::get('/edit/{id}', [UserController::class, 'edit'])->name('hrd.edit');
+        Route::put('/update/{id}', [UserController::class, 'update'])->name('hrd.update');
+        Route::delete('/delete/{id}', [UserController::class, 'destroy'])->name('hrd.destroy');
+    
     });
 
     Route::prefix('setup-app')->group(function () {

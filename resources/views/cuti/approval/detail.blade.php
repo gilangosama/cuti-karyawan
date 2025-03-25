@@ -17,15 +17,15 @@
                     <div class="row g-3">
                         <div class="col-md-6">
                             <label class="form-label small fw-medium text-muted">Nama Karyawan</label>
-                            <p class="mb-0" id="nama">{{  }}</p>
+                            <p class="mb-0" id="nama">{{ $cuti->user->name }}</p>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label small fw-medium text-muted">Departemen</label>
-                            <p class="mb-0" id="departemen"></p>
+                            <p class="mb-0" id="departemen">{{ $cuti->user->profil->department }}</p>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label small fw-medium text-muted">Jabatan</label>
-                            <p class="mb-0"></p>
+                            <p class="mb-0">{{ $cuti->user->profil->position }}</p>
                         </div>
                     </div>
                 </div>
@@ -36,19 +36,20 @@
                     <div class="row g-3">
                         <div class="col-md-6">
                             <label class="form-label small fw-medium text-muted">Jenis Cuti</label>
-                            <p class="mb-0" id="jenisCuti"></p>
+                            <p class="mb-0" id="jenisCuti">{{ $cuti->jenis_cuti }}</p>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label small fw-medium text-muted">Tanggal Cuti</label>
-                            <p class="mb-0" id="tanggalCuti"></p>
+                            <p class="mb-0" id="tanggalCuti">{{ \Carbon\Carbon::parse($cuti->start_date)->format('y-m-d') }} - {{ \Carbon\Carbon::parse($cuti->end_date)->format('y-m-d') }}
+                            </p>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label small fw-medium text-muted">Durasi</label>
-                            <p class="mb-0" id="durasi">Hari</p>
+                            <p class="mb-0" id="durasi">{{ $cuti->total_days }} Hari</p>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label small fw-medium text-muted">Alamat Selama Cuti</label>
-                            <p class="mb-0" id="alamat"></p>
+                            <p class="mb-0" id="alamat">{{ $cuti->address }}</p>
                         </div>
                     </div>
                 </div>
@@ -57,7 +58,8 @@
                 <div class="mb-4">
                     <h5 class="fw-medium mb-3">Dokumen Pendukung</h5>
                     <div class="border rounded-3 p-3">
-                        <a href="" target="_blank" class="text-decoration-none" style="color: #7C3AED;">
+                        <a href="{{ $cuti->dokumen }}" target="_blank" class="text-decoration-none"
+                            style="color: #7C3AED;">
                             <i class="bi bi-download me-1"></i>
                             Lihat Surat Dokter
                         </a>
@@ -66,8 +68,16 @@
 
                 <!-- Tombol Aksi -->
                 <div class="d-flex justify-content-end gap-2">
-                    <button onclick="rejectLeave()" class="btn btn-danger">Tolak</button>
-                    <button onclick="approveLeave()" class="btn btn-success">Setujui</button>
+                    <form action="{{ route('cuti.approval.reject', $cuti->id) }}" method="POST" class="d-inline">
+                        @csrf
+                        @method('PUT')
+                        <button type="submit" class="btn btn-danger">Tolak</button>
+                    </form>
+                    <form action="{{ route('cuti.approval.approve', $cuti->id) }}" method="POST" class="d-inline">
+                        @csrf
+                        @method('PUT')
+                        <button type="submit" class="btn btn-success">Setujui</button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -84,23 +94,6 @@
         }
     </style>
 
-    @push('scripts')
-        <script>
-            function approveLeave() {
-                if (confirm('Apakah Anda yakin ingin menyetujui cuti ini?')) {
-                    alert('Cuti berhasil disetujui');
-                    window.location.href = "{{ route('cuti.approval.index') }}";
-                }
-            }
-
-            function rejectLeave() {
-                if (confirm('Apakah Anda yakin ingin menolak cuti ini?')) {
-                    alert('Cuti berhasil ditolak');
-                    window.location.href = "{{ route('cuti.approval.index') }}";
-                }
-            }
-        </script>
-    @endpush
 
     @push('styles')
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">

@@ -7,12 +7,23 @@ use Illuminate\Http\Request;
 
 class CutiApprovalController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $cutiList = Cuti::query()
             ->when(auth()->user()->role === 'supervisor', function ($query) {
                 return $query->whereHas('user', function ($q) {
                     $q->where('department', auth()->user()->profil->department);
+                });
+            })
+            ->when($request->status, function ($query, $status) {
+                return $query->where('status', $status);
+            })
+            ->when($request->jenis_cuti, function ($query, $jenis_cuti) {
+                return $query->where('jenis_cuti', $jenis_cuti);
+            })
+            ->when($request->search, function ($query, $search) {
+                return $query->whereHas('user', function ($q) use ($search) {
+                    $q->where('name', 'like', "%{$search}%");
                 });
             })
             ->with(['user', 'approval1', 'approval2', 'hrd'])
@@ -49,9 +60,11 @@ class CutiApprovalController extends Controller
         }
     }
 
-    public function detail()
+    public function detail($id)
     {
-        return view('cuti.approval.detail');
+        $cuti = Cuti::with(['user', 'approval1', 'approval2', 'hrd'])->findOrFail($id);
+
+        return view('cuti.approval.detail', compact('cuti'));
     }
 
     public function hrd()
@@ -65,5 +78,24 @@ class CutiApprovalController extends Controller
 
         return view('cuti.approval.hrd', compact('cutiList'));
     }
+
+    public function approved($id)
+    {
+        $cuti = Cuti::findOrFail($id);
+
+        $cuti->status = 'approved';
+        $cuti->save();
+
+        return redirect()->back()->with('success', 'Cuti berhasil disetujui');
+    }
+
+    public function reject($id)
+    {
+        $cuti = Cuti::findOrFail($id);
+
+        $cuti->status = 'rejected';
+        $cuti->save();
+
+        return redirect()->back()->with('success', 'Cuti berhasil ditolak');
+    }
 }
-    

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Profil;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -24,23 +25,33 @@ class UserController extends Controller
         return view('hrd.index', compact('users'));
     }
 
+    public function create()
+    {
+        return view('hrd.create');
+    }
+
     public function store(Request $request)
     {
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
-            'badge_id' => 'required|string|max:255|unique:users',
             'role' => 'required|string',
             'password' => 'required|string|min:8|confirmed',
         ]);
 
-        User::create([
+        $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'badge_id' => $request->badge_id,
             'role' => $request->role,
             'password' => Hash::make($request->password),
         ]);
+
+        $profil = Profil::create([
+            'user_id' => $user->id,
+            'kouta' => 12,
+        ]);
+
+        $user->profil()->save($profil);
 
         return redirect()->route('hrd.index')->with('success', 'User created successfully.');
     }
